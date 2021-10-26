@@ -27,8 +27,10 @@ const int PIXELPIN_1 = 15, PIXELPIN_2 = 16,   PIXELCOUNT = 1;
       red=0, green=1, blue=2,
       off_rgb[]   = {0,0,0},
       bri[]       = {25,100,255},
-      low = 3, med = 75, high = 255,          // for NP light intensity
-      quickDel=50,   ckDel = 1000, longDel =  3000      //delay
+      minNP = 0,  maxNP =255,
+      low = 3,    med = 75,     high = 255,          // for NP light intensity
+      NPintensity   = 0, newNPintensity,       // var to hold mapped value from dist
+      quickDel = 50,   ckDel = 1000, longDel =  3000      //delay
       ;
 Adafruit_NeoPixel pixel_1(PIXELCOUNT, PIXELPIN_1, NEO_RGB + NEO_KHZ800); // declare object
 Adafruit_NeoPixel pixel_2(PIXELCOUNT, PIXELPIN_2, NEO_GRB + NEO_KHZ800); // declare object
@@ -60,24 +62,30 @@ void loop() {
   distance = getDist(trigPin, duration, distance);
   inRange = distance < maxDist && distance > minDist;
   Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
-  delay(500);
+  
+  NPintensity = map(distance, minDist, maxDist, maxNP, minNP);
+  Serial.printf("Mapping Dist to NPs, Dist: %i NPintensity: %i minDist: %i maxDist %i minNP %i maxNP %i  \n",distance, NPintensity, minDist, maxDist, minNP, maxNP);
+
+//  delay(3000);
   if (inRange) {
     Serial.printf("Object has entered scanning field: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
-    showNPlvl(distance);
+    NPsOn(NPintensity);
+//    showNPmapped(NPintensity);
+//    showNPlvl(distance);
 
   }
   else {
     NPsOff();
   }
 
-//    new_Pix_P = map(position, enc_Low, enc_High, pix_Low, pix_High);
-
-//      Serial.printf("mapping Neo pi's: %i %i \n",position, new_Pix_P);
-  
 }           // *** END MAIN VOID LOOP ***
 
 
                   //  FUNCTIONS //
+
+//void showNPmapped(int _NPintensity) {
+//  NPsON(_NPintensity);
+//}
 
 
 void showNPlvl(int _distance) {
