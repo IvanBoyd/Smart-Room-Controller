@@ -6,7 +6,7 @@
  */
  
  #include <Adafruit_NeoPixel.h>
- const int  PIXELPIN =   17, // Pin the NeoPix are conn'd to
+ const int  PIXELPIN =   3, // Pin the NeoPix are conn'd to
             PIXELCOUNT = 16;         
         int n = 0,           // will use as pix counter in array
             red_rgb[]   = {245, 53, 10},
