@@ -50,6 +50,8 @@ void setup() {
   while(!Serial);
   Serial.printf("Printer initialized\n");
   delay(500);
+  pixel_1.begin();
+  pixel_2.begin();
   runNPchk();   // Turns NP's OFF, then ON Low for ckDel(3 Sec's), 
                 //ditto Med & High
   NPsOff();
@@ -63,7 +65,11 @@ void loop() {
   inRange = distance < maxDist && distance > minDist;
   Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
   
-  NPintensity = map(distance, minDist, maxDist, maxNP, minNP);
+//  NPintensity = map(distance, minDist, 500, maxNP, minNP);
+//    NPintensity = map(distance, 1, 500, 50, 0);
+        NPintensity = map(distance, 500, 0, 0, 255);
+
+
   Serial.printf("Mapping Dist to NPs, Dist: %i NPintensity: %i minDist: %i maxDist %i minNP %i maxNP %i  \n",distance, NPintensity, minDist, maxDist, minNP, maxNP);
 
 //  delay(3000);
@@ -117,8 +123,9 @@ void runNPchk() {       // Turns NP's OFF, then ON Low for ckDel(3 Sec's), ditto
 void NPsOn(int _bri) {  // Turns All NP's On brightness level set a parameter
  // n is pix# being set
   Serial.printf("Turn NP's On n: %i PIXELCOUNT %i\n",n,PIXELCOUNT);
-  pixel_1.begin();
-  pixel_2.begin();
+    Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
+
+
 //  bri = 100;
   pixel_1.setBrightness(_bri); 
   pixel_2.setBrightness(_bri);  
