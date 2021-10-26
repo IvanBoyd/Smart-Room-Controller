@@ -64,10 +64,11 @@ void loop() {
   distance = getDist(trigPin, duration, distance);
   inRange = distance < maxDist && distance > minDist;
   Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
-  
+
+//  NPintensity = map(distance, minDist, maxDist, minNP, maxNP);
 //  NPintensity = map(distance, minDist, 500, maxNP, minNP);
 //    NPintensity = map(distance, 1, 500, 50, 0);
-        NPintensity = map(distance, 500, 0, 0, 255);
+        NPintensity = map(distance, 100, 0, 0, 127);
 
 
   Serial.printf("Mapping Dist to NPs, Dist: %i NPintensity: %i minDist: %i maxDist %i minNP %i maxNP %i  \n",distance, NPintensity, minDist, maxDist, minNP, maxNP);
