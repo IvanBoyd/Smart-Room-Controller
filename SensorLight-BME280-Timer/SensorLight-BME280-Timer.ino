@@ -65,8 +65,9 @@ if((curr_T - lastSec)>1000) {                 // Update Time, Run once/per/secon
   tempF   = CtoF(bme.readTemperature());    // read temp and call CtoF function
 //    Serial.printf("Temperature by Second: %f \n",tempF);
 //    delay(500);
-  if(CtoF(bme.readTemperature()) > fiveMinAvg +1) {
+  while(CtoF(bme.readTemperature()) > fiveMinAvg +1) {
     strobeNPs();
+    delay(10);
   }
 }
 
@@ -76,7 +77,7 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
     Serial.printf("Temperature by Minute: %f \n",tempF);
     if(first5minTemp) {        // load 1st five temps to 5 min temp array to average
       fiveMinTemp[i] = CtoF(bme.readTemperature());
-      Serial.printf("--- loading Min Temp array[%i]: %f ---\n",i,fiveMinTemp[i]);
+      Serial.printf("--- loading 1st 5 Min Temp array[%i]: %f ---\n",i,fiveMinTemp[i]);
       i++;
       }
     if(i==5 && first5minTemp) {     // 1st fiveMinTemp array full, so avg it
@@ -124,9 +125,39 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
       //  -----------     FUNCTIONS      -------------  //
 
 void strobeNPs() {
-    Serial.printf("*** Just pretend that the NP's are a strobbing\n");
-    delay(3000);
+//    Serial.printf("*** Just pretend that the NP's are a strobbing\n");
+//    delay(3000);
+    GRB_NPsOn(low, GRB_PixCnt);
+//    delay(10);
+    GRB_NPsOff(low, GRB_PixCnt);
 }
+
+void GRB_NPsOn(int _bri, int _GRB_PixCnt) {  // Turns All NP's On brightness level set a parameter
+  int i;
+//  Serial.printf("Turn NP's On  GRB_PixCnt %i\n",_GRB_PixCnt);
+//  Serial.printf("Turn NP's On  RGB_PixCnt %i\n",_RGB_PixCnt);
+//  Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
+  GRB_pixels.setBrightness(_bri);  
+  for (i = 0; i < _GRB_PixCnt; i++) {
+    GRB_pixels.setPixelColor(i, 0xFF0000);   // Sets to my Red choice r, g, b = 0-255 
+  }   
+//    delay(20);
+  GRB_pixels.show(); 
+}
+
+void GRB_NPsOff(int _bri, int _GRB_PixCnt) {  // Turns All NP's On brightness level set a parameter
+  int i;
+//  Serial.printf("Turn NP's On  GRB_PixCnt %i\n",_GRB_PixCnt);
+//  Serial.printf("Turn NP's On  RGB_PixCnt %i\n",_RGB_PixCnt);
+//  Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
+  GRB_pixels.setBrightness(_bri);  
+  for (i = 0; i < _GRB_PixCnt; i++) {
+    GRB_pixels.setPixelColor(i, 0x000000);   // Sets to my Red choice r, g, b = 0-255 
+  }   
+//    delay(20);
+  GRB_pixels.show(); 
+}
+
 float CtoF(float _tempC) {     //Convert Celcius to Fahrenheit °F = (°C × 9/5) + 32//
   float _tempF;
   _tempF = (_tempC * 9/5) +32;
