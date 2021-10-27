@@ -1,4 +1,7 @@
 /* From sample code on usinig the HC-SR04
+ *  ivan boyd
+ *  program to hook up HC-SR04 distance sensor and obtain measurable
+ *  values
 */
 // Trig & Echo pins
 const int trigPin = 12,
