@@ -1,4 +1,4 @@
-/* program: SensorLight-BME280 adds temp sensor to inputs. I'm not sure
+/* program: SensorLight-BME280-Timer adds Timer to temp sensor inputs. I'm not sure
  *          what I will do as ouput but a soundwave would be cool :)
  * Ivan Boyd    10/26/2021
  *  
@@ -29,12 +29,17 @@ int   duration = 0,       distance = 0;
 // Set up Adafruit_BME280 Environment for temp, pressure & humidity
 Adafruit_BME280 bme;      // for the I2C device
 float tempC,      tempF,    tempinHg,
-      pressPA,    humidRH,  fiveMinTmp;
+      pressPA,    humidRH,  fiveMinAvg;
 bool  status;
 byte  hexAddress=0x76;
       // "inHg" The barometer measures pressure in 3 different units: 
       //inches of mercury ( inHg) from 0.29 to 32.48 with a resolution of 0.01, 
       //millibars (hPa) from 10.0 to 1100
+//  Time Vars
+int   curr_T  = millis(),   lastSec = millis(),   lastMin = millis(),  
+      minCnt  = 0,                i = 0;
+float fiveMinTemp[5] = {0.0,0.0,0.0,0.0,0.0};
+bool  first5minTemp;
 
 void setup() {
   pinMode(trigPin, OUTPUT);
@@ -47,16 +52,46 @@ void setup() {
                 // ditto Med & High LED intensity
   NPsOff(RGB_PixCnt,GRB_PixCnt);        // Set all NeoPix's to off
   inRange = !inRange;                   // bool var for if obj has entered my region to search
+  lastMin = 0;      
+  first5minTemp = false;
 }
 
 void loop() {
-//   tempC   = bme.readTemperature();  //deg C
+curr_T   = millis();                          // Run Constantly 
+if((curr_T - lastSec)>1000) {                 // Update Time, Run once/per/second
+    Serial.printf(".");     lastSec = millis();     
+    tempF   = CtoF(bme.readTemperature());    // read temp and call CtoF function
+//    Serial.printf("Temperature by Second: %f \n",tempF);
+//    delay(500);
+}
+if((curr_T-lastMin)>60000)  {           // Update time 1x/min 
+    Serial.printf("-");
+    tempF   = CtoF(bme.readTemperature());
+    Serial.printf("Temperature by Minute: %f \n",tempF);
+    if(!first5minTemp) {        // load 1st five temps to 5 min temp array to average
+      fiveMinTemp[i] = CtoF(bme.readTemperature());
+      Serial.printf("--- loading Min Temp Average: %f ---\n",fiveMinTemp[i]);
+      i++;
+      }
+    if(i==5) {             // fiveMinTemp array now full, let's average it
+        i = 0;
+        first5minTemp = true;
+        fiveMinAvg =  (fiveMinTemp[0] + fiveMinTemp[1] +fiveMinTemp[2] 
+                      + fiveMinTemp[3] + fiveMinTemp[4]) / 5;
+        Serial.printf("*** Five Min Temp Average: %f ***\n",fiveMinAvg);
+        delay(3000);           
+     } 
+    
+    lastMin = millis();
+    delay(500);
+    minCnt++;
+}
 
   distance  = getDist(trigPin, duration, distance);
   inRange   = distance < maxDist && distance > minDist;
-  Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
+//  Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
   NPintensity = map(distance, maxDist, 0, 0, 127);
-  Serial.printf("Mapping Dist to NPs, Dist: %i NPintensity: %i minDist: %i maxDist %i minNP %i maxNP %i  \n",distance, NPintensity, minDist, maxDist, minNP, maxNP);
+//  Serial.printf("Mapping Dist to NPs, Dist: %i NPintensity: %i minDist: %i maxDist %i minNP %i maxNP %i  \n",distance, NPintensity, minDist, maxDist, minNP, maxNP);
 
 //  delay(3000);
   if (inRange) {
@@ -112,9 +147,9 @@ void runNPchk() {       // Turns NP's OFF, then ON Low for ckDel(3 Sec's), ditto
 
 void NPsOn(int _bri,int _RGB_PixCnt, int _GRB_PixCnt) {  // Turns All NP's On brightness level set a parameter
   int i;
-  Serial.printf("Turn NP's On  GRB_PixCnt %i\n",_GRB_PixCnt);
-  Serial.printf("Turn NP's On  RGB_PixCnt %i\n",_RGB_PixCnt);
-  Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
+//  Serial.printf("Turn NP's On  GRB_PixCnt %i\n",_GRB_PixCnt);
+//  Serial.printf("Turn NP's On  RGB_PixCnt %i\n",_RGB_PixCnt);
+//  Serial.printf("inRange: %i, Distance = %icm \n", inRange, distance);   // Print dist to Serial Mon
 
   RGB_pixels.setBrightness(_bri); 
   GRB_pixels.setBrightness(_bri);  
@@ -131,7 +166,7 @@ void NPsOn(int _bri,int _RGB_PixCnt, int _GRB_PixCnt) {  // Turns All NP's On br
 
 void NPsOff(int _RGB_PixCnt, int _GRB_PixCnt) {         // Turns All NP's Off ()x000000
   int i;
-  Serial.printf("turn NP's off, RGB: %i GRB: %i\n",_RGB_PixCnt, GRB_PixCnt);
+//  Serial.printf("turn NP's off, RGB: %i GRB: %i\n",_RGB_PixCnt, GRB_PixCnt);
   for (i = 0; i < _RGB_PixCnt; i++) {
     RGB_pixels.setPixelColor(i, 0x000000);   //  Turn off pixels
   }
