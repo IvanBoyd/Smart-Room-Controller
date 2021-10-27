@@ -52,39 +52,57 @@ void setup() {
                 // ditto Med & High LED intensity
   NPsOff(RGB_PixCnt,GRB_PixCnt);        // Set all NeoPix's to off
   inRange = !inRange;                   // bool var for if obj has entered my region to search
-  lastMin = 0;      
-  first5minTemp = false;
+  lastMin = 0;       
+  first5minTemp = true;
+  fiveMinAvg    = CtoF(bme.readTemperature());
+  i = 0;
 }
 
 void loop() {
 curr_T   = millis();                          // Run Constantly 
 if((curr_T - lastSec)>1000) {                 // Update Time, Run once/per/second
-    Serial.printf(".");     lastSec = millis();     
-    tempF   = CtoF(bme.readTemperature());    // read temp and call CtoF function
+  Serial.printf(".");     lastSec = millis();     
+  tempF   = CtoF(bme.readTemperature());    // read temp and call CtoF function
 //    Serial.printf("Temperature by Second: %f \n",tempF);
 //    delay(500);
+  if(CtoF(bme.readTemperature()) > fiveMinAvg +1) {
+    strobeNPs();
+  }
 }
+
 if((curr_T-lastMin)>60000)  {           // Update time 1x/min 
     Serial.printf("-");
     tempF   = CtoF(bme.readTemperature());
     Serial.printf("Temperature by Minute: %f \n",tempF);
-    if(!first5minTemp) {        // load 1st five temps to 5 min temp array to average
+    if(first5minTemp) {        // load 1st five temps to 5 min temp array to average
       fiveMinTemp[i] = CtoF(bme.readTemperature());
-      Serial.printf("--- loading Min Temp Average: %f ---\n",fiveMinTemp[i]);
+      Serial.printf("--- loading Min Temp array[%i]: %f ---\n",i,fiveMinTemp[i]);
       i++;
       }
-    if(i==5) {             // fiveMinTemp array now full, let's average it
-        i = 0;
-        first5minTemp = true;
+    if(i==5 && first5minTemp) {     // 1st fiveMinTemp array full, so avg it
+        i = 0;                      // i will stay 0 and not trigger this function
+        first5minTemp = false;      // Do Not re-enter this if loop again
         fiveMinAvg =  (fiveMinTemp[0] + fiveMinTemp[1] +fiveMinTemp[2] 
                       + fiveMinTemp[3] + fiveMinTemp[4]) / 5;
-        Serial.printf("*** Five Min Temp Average: %f ***\n",fiveMinAvg);
+        Serial.printf("*** FIRST Five Min Temp Average: %f ***\n",fiveMinAvg);
         delay(3000);           
      } 
-    
-    lastMin = millis();
-    delay(500);
-    minCnt++;
+   if(!first5minTemp) {
+      Serial.printf("*** CYCLELING Five Min Temp Average: %f ***\n",fiveMinAvg);
+      fiveMinTemp[0] = fiveMinTemp[1];
+      fiveMinTemp[1] = fiveMinTemp[2];
+      fiveMinTemp[2] = fiveMinTemp[3];
+      fiveMinTemp[3] = fiveMinTemp[4]; 
+      fiveMinTemp[4] = CtoF(bme.readTemperature());
+      fiveMinAvg =  (fiveMinTemp[0] + fiveMinTemp[1] +fiveMinTemp[2] 
+                      + fiveMinTemp[3] + fiveMinTemp[4]) / 5;
+      Serial.printf("tmp1: %f tmp2: %f tmp3: %f tmp4: %f: tmp5: %f\n",fiveMinTemp[0],fiveMinTemp[1],fiveMinTemp[2] 
+                      ,fiveMinTemp[3],fiveMinTemp[4]);
+      delay(3000);   
+     }
+  lastMin = millis();
+  delay(500);
+  minCnt++;
 }
 
   distance  = getDist(trigPin, duration, distance);
@@ -105,6 +123,10 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
 
       //  -----------     FUNCTIONS      -------------  //
 
+void strobeNPs() {
+    Serial.printf("*** Just pretend that the NP's are a strobbing\n");
+    delay(3000);
+}
 float CtoF(float _tempC) {     //Convert Celcius to Fahrenheit °F = (°C × 9/5) + 32//
   float _tempF;
   _tempF = (_tempC * 9/5) +32;
