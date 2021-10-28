@@ -1,10 +1,13 @@
 /* program: SensorLight-BME280-Timer adds Timer to temp sensor inputs. I'm not sure
  *          what I will do as ouput but a soundwave would be cool :)
  * Ivan Boyd    10/26/2021
- *  
- *  Intent of program is to combine dist and temperature sensors and NeoPix programs and
+ *  Program MidTerm Cklist:  H-W-O-3C-2M-3D-FM-XC  ... Upper Case = done, lower case = !done
+ *  N-(H)All Hue ligths, N-(W) 2 Wemo, Y-(O)dynamic OLED msgs, Y-(3C)Min 3 add components,
+ *  Y-(2M)2 Modes (auto, manual), N-(3D)3D Design & Print 1 part, Y-(FM)a FUSE made component,
+ *  .5?-(XC)X/C use 1 component not from class (diffuse NeoPix's
+ *  *Intent of program is to combine dist and temperature sensors and NeoPix programs and
  *  tie distance to LED value intensity output, ie, when object is further away
- *  the LEDs are dimmer
+ *  the LEDs are dimmer, while meeting all obj's of the assignment.
  *  
  *  Legend: "IB" = Infinity Box   "obj" = object    "NP" = NEOPIXEL
 */
