@@ -39,7 +39,7 @@ bool  p_Off   = 0,              // _Off is set false
       lightOn = false;                   // bool defaults to F or 0
 //;  //set power to ON
 EthernetClient client;
-bool status;   //user to ensure port openned correctly
+bool status;   //used to ensure port openned correctly
 byte thisbyte; //used to get IP address
 
 void setup() {

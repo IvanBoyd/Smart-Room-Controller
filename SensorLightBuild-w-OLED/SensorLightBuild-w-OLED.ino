@@ -65,7 +65,7 @@ void setup() {
                 // ditto Med & High LED intensity
   NPsOff(RGB_PixCnt,GRB_PixCnt);        // Set all NeoPix's to off
   inRange = !inRange;                   // bool var for if obj has entered my region to search
-  lastMin = 0;       
+  lastMin = millis();       
   first5minTemp = true;
   fiveMinAvg    = CtoF(bme.readTemperature());
   i = 0;
@@ -80,7 +80,7 @@ if((curr_T - lastSec)>1000) {                 // Update Time, Run once/per/secon
 //    delay(500);
   while(CtoF(bme.readTemperature()) > fiveMinAvg +1) {
     strobeNPs();
-    delay(14);
+    delay(20);
   }
 }
 

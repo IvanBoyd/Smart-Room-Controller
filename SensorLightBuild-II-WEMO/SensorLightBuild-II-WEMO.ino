@@ -14,6 +14,10 @@
 #include <Adafruit_BME280.h>                // temp, pressure & humidity
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_SSD1306.h>               // OLED display
+#include <SPI.h>
+#include <Ethernet.h>
+#include <mac.h>
+#include <wemo.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -41,16 +45,32 @@ int   duration = 0,       distance = 0;
 Adafruit_BME280 bme;      // for the I2C device
 float tempC,      tempF,    tempinHg,
       pressPA,    humidRH,  fiveMinAvg;
-bool  status;
+bool  bmeStatus;         
+bool  eStatus;
 byte  hexAddress=0x76;
       // "inHg" The barometer measures pressure in 3 different units: 
       //inches of mercury ( inHg) from 0.29 to 32.48 with a resolution of 0.01, 
       //millibars (hPa) from 10.0 to 1100
 //  Time Vars
-int   curr_T  = millis(),   lastSec = millis(),   lastMin = millis(),  
-      minCnt  = 0,                i = 0;
+int   curr_T  = millis(),   lastSec     = millis(),   lastMin     = millis(),  
+      minCnt  = 0,          i           = 0,          t           = 0,
+      ttlSec  = 3,          lastSecond  = 0,          currentTime = millis(),
+      lastQSec= millis();
 float fiveMinTemp[5] = {0.0,0.0,0.0,0.0,0.0};
 bool  first5minTemp;
+//  WEMO Vars
+int   wemoLavaLamp  = 0, wemoGreenFan = 1, wemoTeapot = 2, wemoWhiteFan = 3,
+      wemoDelay     = 0;
+bool  p_Off   = 0,              // _Off is set false
+      t_On    = false,
+      lightOn = false;                   // bool defaults to F or 0
+// Button Var's
+int       buttonState =0,     QbuttonState =0;
+const int Y_BUTTONPIN = 8;
+EthernetClient client;
+//bool eStatus;                    //used to ensure port openned correctly
+byte thisbyte;                  //used to get IP address
+
 
 void setup() {
     // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
@@ -58,6 +78,12 @@ void setup() {
     Serial.println("SSD1306 allocation failed");
     for(;;); // Don't proceed, loop forever
   }
+    //initialize ethernet port and uSD module to off
+  pinMode(10, OUTPUT);
+  digitalWrite(10, HIGH);
+  pinMode(4, OUTPUT);
+  digitalWrite(4, HIGH);
+  
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   RGB_pixels.begin();
@@ -72,10 +98,62 @@ void setup() {
   first5minTemp = true;
   fiveMinAvg    = CtoF(bme.readTemperature());
   i = 0;
+  Serial.printf("Starting Program:\n");
+
+  //Start ethernet connection
+  eStatus = Ethernet.begin(mac);
+  if (!eStatus) {
+    Serial.printf("failed to configure Ethernet using DHCP \n");
+    //no point in continueing 
+    while(1);
+  }
+      //print your local IP address
+  Serial.print("My IP address: ");
+  for (thisbyte = 0; thisbyte < 3; thisbyte++) {
+    //print value of each byte of the IP address
+    Serial.printf("%i.",Ethernet.localIP()[thisbyte]);
+    }
+  Serial.printf("%i\n",Ethernet.localIP()[thisbyte]);
+
+    t=millis()/1000.0;
+    Serial.printf("Initial millis is %i \n",t);
+          delay(1000); 
+
+    runWEMOck(wemoLavaLamp, 2000);
+    runWEMOck(wemoGreenFan, 2000);
+    lightOn = false;
+    // leave device  off until prog begins
+    p_Off   = 0;
+    ttlSec  = 3000;
+    pinMode(Y_BUTTONPIN,INPUT_PULLUP); 
+    buttonState=0;        
+    QbuttonState=0;
+    lastSec = millis();
+    t_On = false;  // or 0
+    lastQSec  = millis();
+    delay(170);
 }
 
 void loop() {
-curr_T   = millis();                          // Run Constantly 
+  curr_T   = millis();                          // Run Constantly 
+  if((currentTime - lastQSec)>150) {     // Update Time, Run once/per/Quarter second
+    Serial.printf(";");  
+    QbuttonState = digitalRead(Y_BUTTONPIN);
+    Serial.printf("QbuttonState: %i \n",QbuttonState); 
+//    delay(1000);
+    if(!lightOn && QbuttonState) {      //  button was pressed and light is off
+        switchON(0); 
+        lightOn = true;       
+    }
+    delay(160);
+        QbuttonState = digitalRead(Y_BUTTONPIN);
+
+    if(lightOn && QbuttonState) {
+        switchOFF(0); 
+        lightOn = false;         
+    }
+    lastQSec = millis();
+  }
 if((curr_T - lastSec)>1000) {                 // Update Time, Run once/per/second
   Serial.printf(".");     lastSec = millis();     
   tempF   = CtoF(bme.readTemperature());    // read temp and call CtoF function
@@ -120,10 +198,10 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
                       ,fiveMinTemp[3],fiveMinTemp[4]);
       delay(3000);   
      }
-  lastMin = millis();
-  delay(500);
-  minCnt++;
-}
+    lastMin = millis();
+    delay(500);
+    minCnt++;
+  }
 
   distance  = getDist(trigPin, duration, distance);
   inRange   = distance < maxDist && distance > minDist;
@@ -151,6 +229,17 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
 }     // ************ END MAIN VOID LOOP *************  //
 
       //  -----------     FUNCTIONS      -------------  //
+
+
+void runWEMOck(int _WemoDev, int _wemoDelay) {
+      switchOFF(wemoLavaLamp);       // make sure device is off
+    // Test device ON/OFF
+    switchOFF(_WemoDev);       // make sure device is off
+//    delay(_wemoDelay); 
+    switchON(_WemoDev);        
+    delay(_wemoDelay); 
+    switchOFF(_WemoDev);
+} 
 
 void strobeNPs() {
 //    Serial.printf("*** Just pretend that the NP's are a strobbing\n");
@@ -200,8 +289,8 @@ void runPRTchk() {               // Start print to monitor
 }
 
 void runBMEchk()  {         // check status of BME/temp and send to print
-  status  = bme.begin(hexAddress);
-  if(status ==  false)  {
+  bmeStatus  = bme.begin(hexAddress);
+  if(bmeStatus ==  false)  {
     Serial.printf("BME280 at address 0x%02X failed to start\n", hexAddress);
     delay(4000);
    }
