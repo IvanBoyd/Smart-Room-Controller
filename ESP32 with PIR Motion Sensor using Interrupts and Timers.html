@@ -1,0 +1,2698 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/ -->
+<html lang="en-US" class=" td-md-is-chrome"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ESP32 with PIR Motion Sensor using Interrupts and Timers</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="pingback" href="https://electrorules.com/xmlrpc.php">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="icon" type="image/png" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/Electrorules-300x86.png">
+	<!-- This site is optimized with the Yoast SEO Premium plugin v16.2 (Yoast SEO v17.4) - https://yoast.com/wordpress/plugins/seo/ -->
+	<meta name="description" content="This is a complete guide to use PIR motion sensor with ESP32. Also, use cases and complete explanation on use and usage of delays are provided">
+	<link rel="canonical" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="ESP32 with PIR Motion Sensor using Interrupts and Timers">
+	<meta property="og:description" content="This is a complete guide to use PIR motion sensor with ESP32. Also, use cases and complete explanation on use and usage of delays are provided">
+	<meta property="og:url" content="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/">
+	<meta property="og:site_name" content="Electrorules">
+	<meta property="article:published_time" content="2021-07-01T11:14:35+00:00">
+	<meta property="article:modified_time" content="2021-07-01T11:14:39+00:00">
+	<meta property="og:image" content="https://electrorules.com/wp-content/uploads/2021/07/download.jpg">
+	<meta property="og:image:width" content="302">
+	<meta property="og:image:height" content="167">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:label1" content="Written by">
+	<meta name="twitter:data1" content="vaibhav K">
+	<meta name="twitter:label2" content="Est. reading time">
+	<meta name="twitter:data2" content="10 minutes">
+	<script src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/f.txt"></script><script type="text/javascript" async="" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/analytics.js.download"></script><script src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/f(1).txt" id="google_shimpl"></script><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://electrorules.com/#website","url":"https://electrorules.com/","name":"Electrorules","description":"DIY tutorials, projects ,Technical Resources, and Marker tips","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://electrorules.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#primaryimage","inLanguage":"en-US","url":"https://electrorules.com/wp-content/uploads/2021/07/download.jpg","contentUrl":"https://electrorules.com/wp-content/uploads/2021/07/download.jpg","width":302,"height":167},{"@type":"WebPage","@id":"https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#webpage","url":"https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/","name":"ESP32 with PIR Motion Sensor using Interrupts and Timers","isPartOf":{"@id":"https://electrorules.com/#website"},"primaryImageOfPage":{"@id":"https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#primaryimage"},"datePublished":"2021-07-01T11:14:35+00:00","dateModified":"2021-07-01T11:14:39+00:00","author":{"@id":"https://electrorules.com/#/schema/person/4b672f8fb42b973df0433c50277ae42d"},"description":"This is a complete guide to use PIR motion sensor with ESP32. Also, use cases and complete explanation on use and usage of delays are provided","breadcrumb":{"@id":"https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/"]}]},{"@type":"BreadcrumbList","@id":"https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://electrorules.com/"},{"@type":"ListItem","position":2,"name":"ESP32 with PIR Motion Sensor using Interrupts and Timers"}]},{"@type":"Person","@id":"https://electrorules.com/#/schema/person/4b672f8fb42b973df0433c50277ae42d","name":"vaibhav K","image":{"@type":"ImageObject","@id":"https://electrorules.com/#personlogo","inLanguage":"en-US","url":"https://secure.gravatar.com/avatar/806e0518ab6d3f49026f03fd30ff767a?s=96&d=mm&r=g","contentUrl":"https://secure.gravatar.com/avatar/806e0518ab6d3f49026f03fd30ff767a?s=96&d=mm&r=g","caption":"vaibhav K"},"description":"I am an engineering student and am passionate about exploring anything under the sun. I follow the principle of \"LEARN and TEACH\", and I hope the tutorials I create help in the same. After reading my articles if you have any unresolved queries or would like to give feedback feel free to drop a mail or reach out via LinkedIn. I would be happy to help.","sameAs":["https://instagram.com/vaibhav_krrishna?utm_medium=copy_link","https://www.linkedin.com/in/vaibhav-k-9878701b7"],"url":"https://electrorules.com/author/vaibhav/"}]}</script>
+	<!-- / Yoast SEO Premium plugin. -->
+
+
+<link rel="dns-prefetch" href="https://www.googletagmanager.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com/">
+<link rel="alternate" type="application/rss+xml" title="Electrorules » Feed" href="https://electrorules.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Electrorules » Comments Feed" href="https://electrorules.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Electrorules » ESP32 with PIR Motion Sensor using Interrupts and Timers Comments Feed" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/electrorules.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.8.1"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/wp-emoji-release.min.js.download" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="mkaz-code-syntax-prism-css-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/prism-a11y-dark.css" type="text/css" media="all">
+<link rel="stylesheet" id="td-plugin-newsletter-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="td-plugin-multi-purpose-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/style(1).css" type="text/css" media="all">
+<link crossorigin="anonymous" rel="stylesheet" id="google-fonts-style-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="td-theme-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/style(2).css" type="text/css" media="all">
+<style id="td-theme-inline-css" type="text/css">
+    
+        @media (max-width: 767px) {
+            .td-header-desktop-wrap {
+                display: none;
+            }
+        }
+        @media (min-width: 767px) {
+            .td-header-mobile-wrap {
+                display: none;
+            }
+        }
+    
+	
+</style>
+<link rel="stylesheet" id="td-legacy-framework-front-style-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/td_legacy_main.css" type="text/css" media="all">
+<link rel="stylesheet" id="td-standard-pack-framework-front-style-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/td_standard_pack_main.css" type="text/css" media="all">
+<link rel="stylesheet" id="td-theme-demo-style-css" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/demo_style.css" type="text/css" media="all">
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/scrolltext_custom.js.download" id="custom_js-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/jquery.min.js.download" id="jquery-core-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/jquery-migrate.min.js.download" id="jquery-migrate-js"></script>
+
+<!-- Google Analytics snippet added by Site Kit -->
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/js" id="google_gtagjs-js" async=""></script>
+<script type="text/javascript" id="google_gtagjs-js-after">
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag('set', 'linker', {"domains":["electrorules.com"]} );
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "UA-199041019-1", {"anonymize_ip":true});
+</script>
+
+<!-- End Google Analytics snippet added by Site Kit -->
+<link rel="https://api.w.org/" href="https://electrorules.com/wp-json/"><link rel="alternate" type="application/json" href="https://electrorules.com/wp-json/wp/v2/posts/1196"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://electrorules.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://electrorules.com/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.8.1">
+<link rel="shortlink" href="https://electrorules.com/?p=1196">
+<link rel="alternate" type="application/json+oembed" href="https://electrorules.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Felectrorules.com%2Fesp32-with-pir-motion-sensor-using-interrupts-and-timers%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://electrorules.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Felectrorules.com%2Fesp32-with-pir-motion-sensor-using-interrupts-and-timers%2F&amp;format=xml">
+<meta name="generator" content="Site Kit by Google 1.44.0"><!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+        <script>
+        window.tdb_globals = {"wpRestNonce":"3c5726ec81","wpRestUrl":"https:\/\/electrorules.com\/wp-json\/","permalinkStructure":"\/%postname%\/","isAjax":false,"isAdminBarShowing":false,"autoloadScrollPercent":50,"postAutoloadStatus":"off","origPostEditUrl":null};
+    </script>
+    			<script>
+				window.tdwGlobal = {"adminUrl":"https:\/\/electrorules.com\/wp-admin\/","wpRestNonce":"3c5726ec81","wpRestUrl":"https:\/\/electrorules.com\/wp-json\/","permalinkStructure":"\/%postname%\/"};
+			</script>
+			    <script>
+        window.tdaGlobal = {"adminUrl":"https:\/\/electrorules.com\/wp-admin\/","wpRestNonce":"3c5726ec81","wpRestUrl":"https:\/\/electrorules.com\/wp-json\/","permalinkStructure":"\/%postname%\/","postId":1196};
+    </script>
+    
+<!-- Google AdSense snippet added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense snippet added by Site Kit -->
+<link rel="amphtml" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/?amp=1">
+<!-- Google AdSense snippet added by Site Kit -->
+<script src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/f(2).txt" crossorigin="anonymous" type="text/javascript" data-checked-head="true"></script><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/OOU4XAFfeAV4kM4+W9WBwNAHqq/bvtrRcJ1wpnNyO/i076BSUy1d14l2kBEgVmEuvxojSpD23172C6hBg2AQYAAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AwrB+XVH/KV6HfZNVtSEqlUJi3yUbtCp0/TJRj+38NDIw19/9P1h7ECTtdLdhIzG0Bsl4n/0rVmttJtGUCcewgAAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="Ax15QOERqai2A5XWrDY38Eg07xh2T0pkhpDPJuDlxr7D2Ka8wHvklgK7tTPZOnT+8H31lwHto5JpvYV8jRn1WgIAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9">
+
+<!-- End Google AdSense snippet added by Site Kit -->
+
+<!-- JS generated by theme -->
+
+<script>
+    
+    
+
+	    var tdBlocksArray = []; //here we store all the items for the current page
+
+	    //td_block class - each ajax block uses a object of this class for requests
+	    function tdBlock() {
+		    this.id = '';
+		    this.block_type = 1; //block type id (1-234 etc)
+		    this.atts = '';
+		    this.td_column_number = '';
+		    this.td_current_page = 1; //
+		    this.post_count = 0; //from wp
+		    this.found_posts = 0; //from wp
+		    this.max_num_pages = 0; //from wp
+		    this.td_filter_value = ''; //current live filter value
+		    this.is_ajax_running = false;
+		    this.td_user_action = ''; // load more or infinite loader (used by the animation)
+		    this.header_color = '';
+		    this.ajax_pagination_infinite_stop = ''; //show load more at page x
+	    }
+
+
+        // td_js_generator - mini detector
+        (function(){
+            var htmlTag = document.getElementsByTagName("html")[0];
+
+	        if ( navigator.userAgent.indexOf("MSIE 10.0") > -1 ) {
+                htmlTag.className += ' ie10';
+            }
+
+            if ( !!navigator.userAgent.match(/Trident.*rv\:11\./) ) {
+                htmlTag.className += ' ie11';
+            }
+
+	        if ( navigator.userAgent.indexOf("Edge") > -1 ) {
+                htmlTag.className += ' ieEdge';
+            }
+
+            if ( /(iPad|iPhone|iPod)/g.test(navigator.userAgent) ) {
+                htmlTag.className += ' td-md-is-ios';
+            }
+
+            var user_agent = navigator.userAgent.toLowerCase();
+            if ( user_agent.indexOf("android") > -1 ) {
+                htmlTag.className += ' td-md-is-android';
+            }
+
+            if ( -1 !== navigator.userAgent.indexOf('Mac OS X')  ) {
+                htmlTag.className += ' td-md-is-os-x';
+            }
+
+            if ( /chrom(e|ium)/.test(navigator.userAgent.toLowerCase()) ) {
+               htmlTag.className += ' td-md-is-chrome';
+            }
+
+            if ( -1 !== navigator.userAgent.indexOf('Firefox') ) {
+                htmlTag.className += ' td-md-is-firefox';
+            }
+
+            if ( -1 !== navigator.userAgent.indexOf('Safari') && -1 === navigator.userAgent.indexOf('Chrome') ) {
+                htmlTag.className += ' td-md-is-safari';
+            }
+
+            if( -1 !== navigator.userAgent.indexOf('IEMobile') ){
+                htmlTag.className += ' td-md-is-iemobile';
+            }
+
+        })();
+
+
+
+
+        var tdLocalCache = {};
+
+        ( function () {
+            "use strict";
+
+            tdLocalCache = {
+                data: {},
+                remove: function (resource_id) {
+                    delete tdLocalCache.data[resource_id];
+                },
+                exist: function (resource_id) {
+                    return tdLocalCache.data.hasOwnProperty(resource_id) && tdLocalCache.data[resource_id] !== null;
+                },
+                get: function (resource_id) {
+                    return tdLocalCache.data[resource_id];
+                },
+                set: function (resource_id, cachedData) {
+                    tdLocalCache.remove(resource_id);
+                    tdLocalCache.data[resource_id] = cachedData;
+                }
+            };
+        })();
+
+    
+    
+var td_viewport_interval_list=[{"limitBottom":767,"sidebarWidth":228},{"limitBottom":1018,"sidebarWidth":300},{"limitBottom":1140,"sidebarWidth":324}];
+var tdc_is_installed="yes";
+var td_ajax_url="https:\/\/electrorules.com\/wp-admin\/admin-ajax.php?td_theme_name=Newspaper&v=10.4";
+var td_get_template_directory_uri="https:\/\/electrorules.com\/wp-content\/plugins\/td-composer\/legacy\/common";
+var tds_snap_menu="smart_snap_always";
+var tds_logo_on_sticky="show_header_logo";
+var tds_header_style="3";
+var td_please_wait="Please wait...";
+var td_email_user_pass_incorrect="User or password incorrect!";
+var td_email_user_incorrect="Email or username incorrect!";
+var td_email_incorrect="Email incorrect!";
+var tds_more_articles_on_post_enable="show";
+var tds_more_articles_on_post_time_to_wait="";
+var tds_more_articles_on_post_pages_distance_from_top=0;
+var tds_theme_color_site_wide="#f45511";
+var tds_smart_sidebar="enabled";
+var tdThemeName="Newspaper";
+var td_magnific_popup_translation_tPrev="Previous (Left arrow key)";
+var td_magnific_popup_translation_tNext="Next (Right arrow key)";
+var td_magnific_popup_translation_tCounter="%curr% of %total%";
+var td_magnific_popup_translation_ajax_tError="The content from %url% could not be loaded.";
+var td_magnific_popup_translation_image_tError="The image #%curr% could not be loaded.";
+var tdBlockNonce="61c11ac0dc";
+var tdDateNamesI18n={"month_names":["January","February","March","April","May","June","July","August","September","October","November","December"],"month_names_short":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"day_names":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"day_names_short":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]};
+var td_ad_background_click_link="";
+var td_ad_background_click_target="";
+</script>
+
+
+<!-- Header style compiled by theme -->
+
+<style>
+    
+.td-header-wrap .black-menu .sf-menu > .current-menu-item > a,
+    .td-header-wrap .black-menu .sf-menu > .current-menu-ancestor > a,
+    .td-header-wrap .black-menu .sf-menu > .current-category-ancestor > a,
+    .td-header-wrap .black-menu .sf-menu > li > a:hover,
+    .td-header-wrap .black-menu .sf-menu > .sfHover > a,
+    .sf-menu > .current-menu-item > a:after,
+    .sf-menu > .current-menu-ancestor > a:after,
+    .sf-menu > .current-category-ancestor > a:after,
+    .sf-menu > li:hover > a:after,
+    .sf-menu > .sfHover > a:after,
+    .header-search-wrap .td-drop-down-search:after,
+    .header-search-wrap .td-drop-down-search .btn:hover,
+    input[type=submit]:hover,
+    .td-read-more a,
+    .td-post-category:hover,
+    .td_top_authors .td-active .td-author-post-count,
+    .td_top_authors .td-active .td-author-comments-count,
+    .td_top_authors .td_mod_wrap:hover .td-author-post-count,
+    .td_top_authors .td_mod_wrap:hover .td-author-comments-count,
+    .td-404-sub-sub-title a:hover,
+    .td-search-form-widget .wpb_button:hover,
+    .td-rating-bar-wrap div,
+    .dropcap,
+    .td_wrapper_video_playlist .td_video_controls_playlist_wrapper,
+    .wpb_default,
+    .wpb_default:hover,
+    .td-left-smart-list:hover,
+    .td-right-smart-list:hover,
+    #bbpress-forums button:hover,
+    .bbp_widget_login .button:hover,
+    .td-footer-wrapper .td-post-category,
+    .td-footer-wrapper .widget_product_search input[type="submit"]:hover,
+    .single-product .product .summary .cart .button:hover,
+    .td-next-prev-wrap a:hover,
+    .td-load-more-wrap a:hover,
+    .td-post-small-box a:hover,
+    .page-nav .current,
+    .page-nav:first-child > div,
+    #bbpress-forums .bbp-pagination .current,
+    #bbpress-forums #bbp-single-user-details #bbp-user-navigation li.current a,
+    .td-theme-slider:hover .slide-meta-cat a,
+    a.vc_btn-black:hover,
+    .td-trending-now-wrapper:hover .td-trending-now-title,
+    .td-scroll-up,
+    .td-smart-list-button:hover,
+    .td-weather-information:before,
+    .td-weather-week:before,
+    .td_block_exchange .td-exchange-header:before,
+    .td-pulldown-syle-2 .td-subcat-dropdown ul:after,
+    .td_block_template_9 .td-block-title:after,
+    .td_block_template_15 .td-block-title:before,
+    div.wpforms-container .wpforms-form div.wpforms-submit-container button[type=submit],
+    .td-close-video-fixed {
+        background-color: #f45511;
+    }
+
+    .td_block_template_4 .td-related-title .td-cur-simple-item:before {
+        border-color: #f45511 transparent transparent transparent !important;
+    }
+    
+    
+    .td_block_template_4 .td-related-title .td-cur-simple-item,
+    .td_block_template_3 .td-related-title .td-cur-simple-item,
+    .td_block_template_9 .td-related-title:after {
+        background-color: #f45511;
+    }
+
+    a,
+    cite a:hover,
+    .td-page-content blockquote p,
+    .td-post-content blockquote p,
+    .mce-content-body blockquote p,
+    .comment-content blockquote p,
+    .wpb_text_column blockquote p,
+    .td_block_text_with_title blockquote p,
+    .td_module_wrap:hover .entry-title a,
+    .td-subcat-filter .td-subcat-list a:hover,
+    .td-subcat-filter .td-subcat-dropdown a:hover,
+    .td_quote_on_blocks,
+    .dropcap2,
+    .dropcap3,
+    .td_top_authors .td-active .td-authors-name a,
+    .td_top_authors .td_mod_wrap:hover .td-authors-name a,
+    .td-post-next-prev-content a:hover,
+    .author-box-wrap .td-author-social a:hover,
+    .td-author-name a:hover,
+    .td-author-url a:hover,
+    .comment-reply-link:hover,
+    .logged-in-as a:hover,
+    #cancel-comment-reply-link:hover,
+    .td-search-query,
+    .widget a:hover,
+    .td_wp_recentcomments a:hover,
+    .archive .widget_archive .current,
+    .archive .widget_archive .current a,
+    .widget_calendar tfoot a:hover,
+    #bbpress-forums li.bbp-header .bbp-reply-content span a:hover,
+    #bbpress-forums .bbp-forum-freshness a:hover,
+    #bbpress-forums .bbp-topic-freshness a:hover,
+    #bbpress-forums .bbp-forums-list li a:hover,
+    #bbpress-forums .bbp-forum-title:hover,
+    #bbpress-forums .bbp-topic-permalink:hover,
+    #bbpress-forums .bbp-topic-started-by a:hover,
+    #bbpress-forums .bbp-topic-started-in a:hover,
+    #bbpress-forums .bbp-body .super-sticky li.bbp-topic-title .bbp-topic-permalink,
+    #bbpress-forums .bbp-body .sticky li.bbp-topic-title .bbp-topic-permalink,
+    .widget_display_replies .bbp-author-name,
+    .widget_display_topics .bbp-author-name,
+    .td-subfooter-menu li a:hover,
+    a.vc_btn-black:hover,
+    .td-smart-list-dropdown-wrap .td-smart-list-button:hover,
+    .td-instagram-user a,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-display-option:hover,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-display-option:hover i,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-link:hover,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-item .td-cur-simple-item,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more i,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more i,
+    .td_block_template_2 .td-related-title .td-cur-simple-item,
+    .td_block_template_5 .td-related-title .td-cur-simple-item,
+    .td_block_template_6 .td-related-title .td-cur-simple-item,
+    .td_block_template_7 .td-related-title .td-cur-simple-item,
+    .td_block_template_8 .td-related-title .td-cur-simple-item,
+    .td_block_template_9 .td-related-title .td-cur-simple-item,
+    .td_block_template_10 .td-related-title .td-cur-simple-item,
+    .td_block_template_11 .td-related-title .td-cur-simple-item,
+    .td_block_template_12 .td-related-title .td-cur-simple-item,
+    .td_block_template_13 .td-related-title .td-cur-simple-item,
+    .td_block_template_14 .td-related-title .td-cur-simple-item,
+    .td_block_template_15 .td-related-title .td-cur-simple-item,
+    .td_block_template_16 .td-related-title .td-cur-simple-item,
+    .td_block_template_17 .td-related-title .td-cur-simple-item,
+    .td-theme-wrap .sf-menu ul .td-menu-item > a:hover,
+    .td-theme-wrap .sf-menu ul .sfHover > a,
+    .td-theme-wrap .sf-menu ul .current-menu-ancestor > a,
+    .td-theme-wrap .sf-menu ul .current-category-ancestor > a,
+    .td-theme-wrap .sf-menu ul .current-menu-item > a,
+    .td_outlined_btn,
+    .td_block_categories_tags .td-ct-item:hover {
+        color: #f45511;
+    }
+
+    a.vc_btn-black.vc_btn_square_outlined:hover,
+    a.vc_btn-black.vc_btn_outlined:hover {
+        color: #f45511 !important;
+    }
+
+    .td-next-prev-wrap a:hover,
+    .td-load-more-wrap a:hover,
+    .td-post-small-box a:hover,
+    .page-nav .current,
+    .page-nav:first-child > div,
+    #bbpress-forums .bbp-pagination .current,
+    .post .td_quote_box,
+    .page .td_quote_box,
+    a.vc_btn-black:hover,
+    .td_block_template_5 .td-block-title > *,
+    .td_outlined_btn {
+        border-color: #f45511;
+    }
+
+    .td_wrapper_video_playlist .td_video_currently_playing:after {
+        border-color: #f45511 !important;
+    }
+
+    .header-search-wrap .td-drop-down-search:before {
+        border-color: transparent transparent #f45511 transparent;
+    }
+
+    .block-title > span,
+    .block-title > a,
+    .block-title > label,
+    .widgettitle,
+    .widgettitle:after,
+    body .td-trending-now-title,
+    .td-trending-now-wrapper:hover .td-trending-now-title,
+    .wpb_tabs li.ui-tabs-active a,
+    .wpb_tabs li:hover a,
+    .vc_tta-container .vc_tta-color-grey.vc_tta-tabs-position-top.vc_tta-style-classic .vc_tta-tabs-container .vc_tta-tab.vc_active > a,
+    .vc_tta-container .vc_tta-color-grey.vc_tta-tabs-position-top.vc_tta-style-classic .vc_tta-tabs-container .vc_tta-tab:hover > a,
+    .td_block_template_1 .td-related-title .td-cur-simple-item,
+    .td-subcat-filter .td-subcat-dropdown:hover .td-subcat-more, 
+    .td_3D_btn,
+    .td_shadow_btn,
+    .td_default_btn,
+    .td_round_btn, 
+    .td_outlined_btn:hover {
+    	background-color: #f45511;
+    }
+    .block-title,
+    .td_block_template_1 .td-related-title,
+    .wpb_tabs .wpb_tabs_nav,
+    .vc_tta-container .vc_tta-color-grey.vc_tta-tabs-position-top.vc_tta-style-classic .vc_tta-tabs-container {
+        border-color: #f45511;
+    }
+    .td_block_wrap .td-subcat-item a.td-cur-simple-item {
+	    color: #f45511;
+	}
+
+
+    
+    .td-grid-style-4 .entry-title
+    {
+        background-color: rgba(244, 85, 17, 0.7);
+    }
+
+
+    
+    .td-menu-background:before,
+    .td-search-background:before {
+        background: rgba(234,157,70,0.8);
+        background: -moz-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(234,157,70,0.8)), color-stop(100%, rgba(178,21,3,0.7)));
+        background: -webkit-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: -o-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: -ms-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: linear-gradient(to bottom, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(234,157,70,0.8)', endColorstr='rgba(178,21,3,0.7)', GradientType=0 );
+    }
+
+    
+    .td-mobile-content .current-menu-item > a,
+    .td-mobile-content .current-menu-ancestor > a,
+    .td-mobile-content .current-category-ancestor > a,
+    #td-mobile-nav .td-menu-login-section a:hover,
+    #td-mobile-nav .td-register-section a:hover,
+    #td-mobile-nav .td-menu-socials-wrap a:hover i,
+    .td-search-close a:hover i {
+        color: #0a0303;
+    }
+
+    
+    .td-menu-background,
+    .td-search-background {
+        background-image: url('https://electrorules.com/wp-content/uploads/2021/06/12.jpg');
+    }
+
+    
+    ul.sf-menu > .menu-item > a {
+        font-family:Oswald;
+	font-size:14px;
+	line-height:48px;
+	font-weight:300;
+	
+    }
+    
+    .sf-menu ul .menu-item a {
+        font-family:Oswald;
+	font-size:13px;
+	font-weight:300;
+	text-transform:uppercase;
+	
+    }
+    
+    .white-popup-block:before {
+        background-image: url('https://electrorules.com/wp-content/uploads/2021/06/9.jpg');
+    }.td-header-style-12 .td-header-menu-wrap-full,
+    .td-header-style-12 .td-affix,
+    .td-grid-style-1.td-hover-1 .td-big-grid-post:hover .td-post-category,
+    .td-grid-style-5.td-hover-1 .td-big-grid-post:hover .td-post-category,
+    .td_category_template_3 .td-current-sub-category,
+    .td_category_template_8 .td-category-header .td-category a.td-current-sub-category,
+    .td_category_template_4 .td-category-siblings .td-category a:hover,
+     .td_block_big_grid_9.td-grid-style-1 .td-post-category,
+    .td_block_big_grid_9.td-grid-style-5 .td-post-category,
+    .td-grid-style-6.td-hover-1 .td-module-thumb:after,
+     .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .current-menu-item > a,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .current-menu-ancestor > a,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .current-category-ancestor > a,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > li > a:hover,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .sfHover > a {
+        background-color: #f45511;
+    }
+    
+    .td_mega_menu_sub_cats .cur-sub-cat,
+    .td-mega-span h3 a:hover,
+    .td_mod_mega_menu:hover .entry-title a,
+    .header-search-wrap .result-msg a:hover,
+    .td-header-top-menu .td-drop-down-search .td_module_wrap:hover .entry-title a,
+    .td-header-top-menu .td-icon-search:hover,
+    .td-header-wrap .result-msg a:hover,
+    .top-header-menu li a:hover,
+    .top-header-menu .current-menu-item > a,
+    .top-header-menu .current-menu-ancestor > a,
+    .top-header-menu .current-category-ancestor > a,
+    .td-social-icon-wrap > a:hover,
+    .td-header-sp-top-widget .td-social-icon-wrap a:hover,
+    .td_mod_related_posts:hover h3 > a,
+    .td-post-template-11 .td-related-title .td-related-left:hover,
+    .td-post-template-11 .td-related-title .td-related-right:hover,
+    .td-post-template-11 .td-related-title .td-cur-simple-item,
+    .td-post-template-11 .td_block_related_posts .td-next-prev-wrap a:hover,
+    .td-category-header .td-pulldown-category-filter-link:hover,
+    .td-category-siblings .td-subcat-dropdown a:hover,
+    .td-category-siblings .td-subcat-dropdown a.td-current-sub-category,
+    .footer-text-wrap .footer-email-wrap a,
+    .footer-social-wrap a:hover,
+    .td_module_17 .td-read-more a:hover,
+    .td_module_18 .td-read-more a:hover,
+    .td_module_19 .td-post-author-name a:hover,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more i,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more i,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .current-category-ancestor > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .current-menu-ancestor > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .current-menu-item > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .sfHover > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > li > a:hover {
+        color: #f45511;
+    }
+    
+    .td-mega-menu-page .wpb_content_element ul li a:hover,
+    .td-theme-wrap .td-aj-search-results .td_module_wrap:hover .entry-title a,
+    .td-theme-wrap .header-search-wrap .result-msg a:hover {
+        color: #f45511 !important;
+    }
+    
+    .td_category_template_8 .td-category-header .td-category a.td-current-sub-category,
+    .td_category_template_4 .td-category-siblings .td-category a:hover,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .current-menu-item > a,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .current-menu-ancestor > a,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .current-category-ancestor > a,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > li > a:hover,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .sfHover > a {
+        border-color: #f45511;
+    }
+    
+    
+
+
+    
+    .td-header-wrap .td-header-top-menu-full,
+    .td-header-wrap .top-header-menu .sub-menu,
+    .tdm-header-style-1.td-header-wrap .td-header-top-menu-full,
+    .tdm-header-style-1.td-header-wrap .top-header-menu .sub-menu,
+    .tdm-header-style-2.td-header-wrap .td-header-top-menu-full,
+    .tdm-header-style-2.td-header-wrap .top-header-menu .sub-menu,
+    .tdm-header-style-3.td-header-wrap .td-header-top-menu-full,
+    .tdm-header-style-3.td-header-wrap .top-header-menu .sub-menu {
+        background-color: #000000;
+    }
+    .td-header-style-8 .td-header-top-menu-full {
+        background-color: transparent;
+    }
+    .td-header-style-8 .td-header-top-menu-full .td-header-top-menu {
+        background-color: #000000;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .td-header-wrap .td-header-top-menu-full .td-header-top-menu,
+    .td-header-wrap .td-header-top-menu-full {
+        border-bottom: none;
+    }
+
+
+    
+    .td-header-top-menu,
+    .td-header-top-menu a,
+    .td-header-wrap .td-header-top-menu-full .td-header-top-menu,
+    .td-header-wrap .td-header-top-menu-full a,
+    .td-header-style-8 .td-header-top-menu,
+    .td-header-style-8 .td-header-top-menu a,
+    .td-header-top-menu .td-drop-down-search .entry-title a {
+        color: #aaaaaa;
+    }
+
+    
+    .top-header-menu .current-menu-item > a,
+    .top-header-menu .current-menu-ancestor > a,
+    .top-header-menu .current-category-ancestor > a,
+    .top-header-menu li a:hover,
+    .td-header-sp-top-widget .td-icon-search:hover {
+        color: #ffffff;
+    }
+
+    
+    .td-header-wrap .td-header-sp-top-widget .td-icon-font,
+    .td-header-style-7 .td-header-top-menu .td-social-icon-wrap .td-icon-font {
+        color: #aaaaaa;
+    }
+
+    
+    .td-header-wrap .td-header-sp-top-widget i.td-icon-font:hover {
+        color: #ffffff;
+    }
+
+
+    
+    .td-header-wrap .td-header-menu-wrap-full,
+    .td-header-menu-wrap.td-affix,
+    .td-header-style-3 .td-header-main-menu,
+    .td-header-style-3 .td-affix .td-header-main-menu,
+    .td-header-style-4 .td-header-main-menu,
+    .td-header-style-4 .td-affix .td-header-main-menu,
+    .td-header-style-8 .td-header-menu-wrap.td-affix,
+    .td-header-style-8 .td-header-top-menu-full {
+        background-color: #ffffff;
+    }
+    .td-boxed-layout .td-header-style-3 .td-header-menu-wrap,
+    .td-boxed-layout .td-header-style-4 .td-header-menu-wrap,
+    .td-header-style-3 .td_stretch_content .td-header-menu-wrap,
+    .td-header-style-4 .td_stretch_content .td-header-menu-wrap {
+    	background-color: #ffffff !important;
+    }
+    @media (min-width: 1019px) {
+        .td-header-style-1 .td-header-sp-recs,
+        .td-header-style-1 .td-header-sp-logo {
+            margin-bottom: 28px;
+        }
+    }
+    @media (min-width: 768px) and (max-width: 1018px) {
+        .td-header-style-1 .td-header-sp-recs,
+        .td-header-style-1 .td-header-sp-logo {
+            margin-bottom: 14px;
+        }
+    }
+    .td-header-style-7 .td-header-top-menu {
+        border-bottom: none;
+    }
+
+    
+    .td-header-wrap .td-header-menu-wrap .sf-menu > li > a,
+    .td-header-wrap .td-header-menu-social .td-social-icon-wrap a,
+    .td-header-style-4 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-style-5 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-style-6 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-style-12 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-wrap .header-search-wrap #td-header-search-button .td-icon-search {
+        color: #aaaaaa;
+    }
+    .td-header-wrap .td-header-menu-social + .td-search-wrapper #td-header-search-button:before {
+      background-color: #aaaaaa;
+    }
+    
+    
+    
+    ul.sf-menu > .td-menu-item > a,
+    .td-theme-wrap .td-header-menu-social {
+        font-family:Oswald;
+	font-size:14px;
+	line-height:48px;
+	font-weight:300;
+	
+    }
+    
+    .sf-menu ul .td-menu-item a {
+        font-family:Oswald;
+	font-size:13px;
+	font-weight:300;
+	text-transform:uppercase;
+	
+    }
+    
+    
+    
+    .td-theme-wrap .sf-menu .td-normal-menu .sub-menu .td-menu-item > a {
+        color: #aaaaaa;
+    }
+    
+    .td-theme-wrap .sf-menu .td-normal-menu .td-menu-item > a:hover,
+    .td-theme-wrap .sf-menu .td-normal-menu .sfHover > a,
+    .td-theme-wrap .sf-menu .td-normal-menu .current-menu-ancestor > a,
+    .td-theme-wrap .sf-menu .td-normal-menu .current-category-ancestor > a,
+    .td-theme-wrap .sf-menu .td-normal-menu .current-menu-item > a {
+        color: #000000;
+    }
+    
+    
+   
+    
+    .td-footer-wrapper::before {
+        background-image: url('https://electrorules.com/wp-content/uploads/2021/06/wp1971411-300x169.jpg');
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-size: 100% auto;
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-position: center center;
+    }
+
+    
+    .td-footer-wrapper::before {
+        opacity: 0.06;
+    }
+    
+    
+    
+    
+    
+    .top-header-menu > li > a,
+    .td-weather-top-widget .td-weather-now .td-big-degrees,
+    .td-weather-top-widget .td-weather-header .td-weather-city,
+    .td-header-sp-top-menu .td_data_time {
+        font-size:12px;
+	line-height:30px;
+	font-weight:normal;
+	
+    }
+    
+    .td_mod_mega_menu .item-details a {
+        font-family:"Open Sans";
+	font-size:13px;
+	line-height:16px;
+	font-weight:bold;
+	
+    }
+    
+    .td_mega_menu_sub_cats .block-mega-child-cats a {
+        font-family:Oswald;
+	font-weight:300;
+	text-transform:uppercase;
+	
+    }
+    
+    .top-header-menu > li,
+    .td-header-sp-top-menu,
+    #td-outer-wrap .td-header-sp-top-widget .td-search-btns-wrap,
+    #td-outer-wrap .td-header-sp-top-widget .td-social-icon-wrap {
+        line-height: 30px;
+    }
+    
+    
+    
+    .td_module_1 .td-module-title {
+    	font-family:"Open Sans";
+	font-size:16px;
+	line-height:20px;
+	font-weight:800;
+	
+    }
+    
+    .td_module_4 .td-module-title {
+    	font-size:16px;
+	line-height:20px;
+	font-weight:800;
+	
+    }
+    
+    .td_module_8 .td-module-title {
+    	font-size:13px;
+	line-height:18px;
+	font-weight:normal;
+	
+    }
+    
+    .td-post-template-3 .td-post-header .entry-title {
+        font-size:54px;
+	line-height:58px;
+	font-weight:800;
+	
+    }
+    
+    .post blockquote p,
+    .page blockquote p,
+    .td-post-text-content blockquote p {
+        font-weight:500;
+	
+    }
+    
+    .post .td-post-next-prev-content a {
+        font-weight:bold;
+	
+    }
+    
+    .td-trending-now-display-area .entry-title {
+    	font-family:"Open Sans";
+	font-size:14px;
+	font-weight:bold;
+	
+    }
+    
+    .tdm-menu-active-style2 .tdm-header ul.sf-menu > .td-menu-item,
+    .tdm-menu-active-style4 .tdm-header ul.sf-menu > .td-menu-item,
+    .tdm-header .tdm-header-menu-btns,
+    .tdm-header-style-1 .td-main-menu-logo a,
+    .tdm-header-style-2 .td-main-menu-logo a,
+    .tdm-header-style-3 .td-main-menu-logo a {
+        line-height: 48px;
+    }
+    .tdm-header-style-1 .td-main-menu-logo,
+    .tdm-header-style-2 .td-main-menu-logo,
+    .tdm-header-style-3 .td-main-menu-logo {
+        height: 48px;
+    }
+    @media (min-width: 768px) {
+        .td-header-style-4 .td-main-menu-logo img,
+        .td-header-style-5 .td-main-menu-logo img,
+        .td-header-style-6 .td-main-menu-logo img,
+        .td-header-style-7 .td-header-sp-logo img,
+        .td-header-style-12 .td-main-menu-logo img {
+            max-height: 48px;
+        }
+        .td-header-style-4 .td-main-menu-logo,
+        .td-header-style-5 .td-main-menu-logo,
+        .td-header-style-6 .td-main-menu-logo,
+        .td-header-style-7 .td-header-sp-logo,
+        .td-header-style-12 .td-main-menu-logo {
+            height: 48px;
+        }
+        .td-header-style-4 .td-main-menu-logo a,
+        .td-header-style-5 .td-main-menu-logo a,
+        .td-header-style-6 .td-main-menu-logo a,
+        .td-header-style-7 .td-header-sp-logo a,
+        .td-header-style-7 .td-header-sp-logo img,
+        .td-header-style-12 .td-main-menu-logo a,
+        .td-header-style-12 .td-header-menu-wrap .sf-menu > li > a {
+            line-height: 48px;
+        }
+        .td-header-style-7 .sf-menu,
+        .td-header-style-7 .td-header-menu-social {
+            margin-top: 0;
+        }
+        .td-header-style-7 #td-top-search {
+            top: 0;
+            bottom: 0;
+        }
+        .td-header-wrap .header-search-wrap #td-header-search-button .td-icon-search {
+            line-height: 48px;
+        }
+        .tdm-header-style-1 .td-main-menu-logo img, 
+        .tdm-header-style-2 .td-main-menu-logo img, 
+        .tdm-header-style-3 .td-main-menu-logo img {
+            max-height: 48px;
+        }
+    }
+.td-header-wrap .black-menu .sf-menu > .current-menu-item > a,
+    .td-header-wrap .black-menu .sf-menu > .current-menu-ancestor > a,
+    .td-header-wrap .black-menu .sf-menu > .current-category-ancestor > a,
+    .td-header-wrap .black-menu .sf-menu > li > a:hover,
+    .td-header-wrap .black-menu .sf-menu > .sfHover > a,
+    .sf-menu > .current-menu-item > a:after,
+    .sf-menu > .current-menu-ancestor > a:after,
+    .sf-menu > .current-category-ancestor > a:after,
+    .sf-menu > li:hover > a:after,
+    .sf-menu > .sfHover > a:after,
+    .header-search-wrap .td-drop-down-search:after,
+    .header-search-wrap .td-drop-down-search .btn:hover,
+    input[type=submit]:hover,
+    .td-read-more a,
+    .td-post-category:hover,
+    .td_top_authors .td-active .td-author-post-count,
+    .td_top_authors .td-active .td-author-comments-count,
+    .td_top_authors .td_mod_wrap:hover .td-author-post-count,
+    .td_top_authors .td_mod_wrap:hover .td-author-comments-count,
+    .td-404-sub-sub-title a:hover,
+    .td-search-form-widget .wpb_button:hover,
+    .td-rating-bar-wrap div,
+    .dropcap,
+    .td_wrapper_video_playlist .td_video_controls_playlist_wrapper,
+    .wpb_default,
+    .wpb_default:hover,
+    .td-left-smart-list:hover,
+    .td-right-smart-list:hover,
+    #bbpress-forums button:hover,
+    .bbp_widget_login .button:hover,
+    .td-footer-wrapper .td-post-category,
+    .td-footer-wrapper .widget_product_search input[type="submit"]:hover,
+    .single-product .product .summary .cart .button:hover,
+    .td-next-prev-wrap a:hover,
+    .td-load-more-wrap a:hover,
+    .td-post-small-box a:hover,
+    .page-nav .current,
+    .page-nav:first-child > div,
+    #bbpress-forums .bbp-pagination .current,
+    #bbpress-forums #bbp-single-user-details #bbp-user-navigation li.current a,
+    .td-theme-slider:hover .slide-meta-cat a,
+    a.vc_btn-black:hover,
+    .td-trending-now-wrapper:hover .td-trending-now-title,
+    .td-scroll-up,
+    .td-smart-list-button:hover,
+    .td-weather-information:before,
+    .td-weather-week:before,
+    .td_block_exchange .td-exchange-header:before,
+    .td-pulldown-syle-2 .td-subcat-dropdown ul:after,
+    .td_block_template_9 .td-block-title:after,
+    .td_block_template_15 .td-block-title:before,
+    div.wpforms-container .wpforms-form div.wpforms-submit-container button[type=submit],
+    .td-close-video-fixed {
+        background-color: #f45511;
+    }
+
+    .td_block_template_4 .td-related-title .td-cur-simple-item:before {
+        border-color: #f45511 transparent transparent transparent !important;
+    }
+    
+    
+    .td_block_template_4 .td-related-title .td-cur-simple-item,
+    .td_block_template_3 .td-related-title .td-cur-simple-item,
+    .td_block_template_9 .td-related-title:after {
+        background-color: #f45511;
+    }
+
+    a,
+    cite a:hover,
+    .td-page-content blockquote p,
+    .td-post-content blockquote p,
+    .mce-content-body blockquote p,
+    .comment-content blockquote p,
+    .wpb_text_column blockquote p,
+    .td_block_text_with_title blockquote p,
+    .td_module_wrap:hover .entry-title a,
+    .td-subcat-filter .td-subcat-list a:hover,
+    .td-subcat-filter .td-subcat-dropdown a:hover,
+    .td_quote_on_blocks,
+    .dropcap2,
+    .dropcap3,
+    .td_top_authors .td-active .td-authors-name a,
+    .td_top_authors .td_mod_wrap:hover .td-authors-name a,
+    .td-post-next-prev-content a:hover,
+    .author-box-wrap .td-author-social a:hover,
+    .td-author-name a:hover,
+    .td-author-url a:hover,
+    .comment-reply-link:hover,
+    .logged-in-as a:hover,
+    #cancel-comment-reply-link:hover,
+    .td-search-query,
+    .widget a:hover,
+    .td_wp_recentcomments a:hover,
+    .archive .widget_archive .current,
+    .archive .widget_archive .current a,
+    .widget_calendar tfoot a:hover,
+    #bbpress-forums li.bbp-header .bbp-reply-content span a:hover,
+    #bbpress-forums .bbp-forum-freshness a:hover,
+    #bbpress-forums .bbp-topic-freshness a:hover,
+    #bbpress-forums .bbp-forums-list li a:hover,
+    #bbpress-forums .bbp-forum-title:hover,
+    #bbpress-forums .bbp-topic-permalink:hover,
+    #bbpress-forums .bbp-topic-started-by a:hover,
+    #bbpress-forums .bbp-topic-started-in a:hover,
+    #bbpress-forums .bbp-body .super-sticky li.bbp-topic-title .bbp-topic-permalink,
+    #bbpress-forums .bbp-body .sticky li.bbp-topic-title .bbp-topic-permalink,
+    .widget_display_replies .bbp-author-name,
+    .widget_display_topics .bbp-author-name,
+    .td-subfooter-menu li a:hover,
+    a.vc_btn-black:hover,
+    .td-smart-list-dropdown-wrap .td-smart-list-button:hover,
+    .td-instagram-user a,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-display-option:hover,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-display-option:hover i,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-link:hover,
+    .td-block-title-wrap .td-wrapper-pulldown-filter .td-pulldown-filter-item .td-cur-simple-item,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more i,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more i,
+    .td_block_template_2 .td-related-title .td-cur-simple-item,
+    .td_block_template_5 .td-related-title .td-cur-simple-item,
+    .td_block_template_6 .td-related-title .td-cur-simple-item,
+    .td_block_template_7 .td-related-title .td-cur-simple-item,
+    .td_block_template_8 .td-related-title .td-cur-simple-item,
+    .td_block_template_9 .td-related-title .td-cur-simple-item,
+    .td_block_template_10 .td-related-title .td-cur-simple-item,
+    .td_block_template_11 .td-related-title .td-cur-simple-item,
+    .td_block_template_12 .td-related-title .td-cur-simple-item,
+    .td_block_template_13 .td-related-title .td-cur-simple-item,
+    .td_block_template_14 .td-related-title .td-cur-simple-item,
+    .td_block_template_15 .td-related-title .td-cur-simple-item,
+    .td_block_template_16 .td-related-title .td-cur-simple-item,
+    .td_block_template_17 .td-related-title .td-cur-simple-item,
+    .td-theme-wrap .sf-menu ul .td-menu-item > a:hover,
+    .td-theme-wrap .sf-menu ul .sfHover > a,
+    .td-theme-wrap .sf-menu ul .current-menu-ancestor > a,
+    .td-theme-wrap .sf-menu ul .current-category-ancestor > a,
+    .td-theme-wrap .sf-menu ul .current-menu-item > a,
+    .td_outlined_btn,
+    .td_block_categories_tags .td-ct-item:hover {
+        color: #f45511;
+    }
+
+    a.vc_btn-black.vc_btn_square_outlined:hover,
+    a.vc_btn-black.vc_btn_outlined:hover {
+        color: #f45511 !important;
+    }
+
+    .td-next-prev-wrap a:hover,
+    .td-load-more-wrap a:hover,
+    .td-post-small-box a:hover,
+    .page-nav .current,
+    .page-nav:first-child > div,
+    #bbpress-forums .bbp-pagination .current,
+    .post .td_quote_box,
+    .page .td_quote_box,
+    a.vc_btn-black:hover,
+    .td_block_template_5 .td-block-title > *,
+    .td_outlined_btn {
+        border-color: #f45511;
+    }
+
+    .td_wrapper_video_playlist .td_video_currently_playing:after {
+        border-color: #f45511 !important;
+    }
+
+    .header-search-wrap .td-drop-down-search:before {
+        border-color: transparent transparent #f45511 transparent;
+    }
+
+    .block-title > span,
+    .block-title > a,
+    .block-title > label,
+    .widgettitle,
+    .widgettitle:after,
+    body .td-trending-now-title,
+    .td-trending-now-wrapper:hover .td-trending-now-title,
+    .wpb_tabs li.ui-tabs-active a,
+    .wpb_tabs li:hover a,
+    .vc_tta-container .vc_tta-color-grey.vc_tta-tabs-position-top.vc_tta-style-classic .vc_tta-tabs-container .vc_tta-tab.vc_active > a,
+    .vc_tta-container .vc_tta-color-grey.vc_tta-tabs-position-top.vc_tta-style-classic .vc_tta-tabs-container .vc_tta-tab:hover > a,
+    .td_block_template_1 .td-related-title .td-cur-simple-item,
+    .td-subcat-filter .td-subcat-dropdown:hover .td-subcat-more, 
+    .td_3D_btn,
+    .td_shadow_btn,
+    .td_default_btn,
+    .td_round_btn, 
+    .td_outlined_btn:hover {
+    	background-color: #f45511;
+    }
+    .block-title,
+    .td_block_template_1 .td-related-title,
+    .wpb_tabs .wpb_tabs_nav,
+    .vc_tta-container .vc_tta-color-grey.vc_tta-tabs-position-top.vc_tta-style-classic .vc_tta-tabs-container {
+        border-color: #f45511;
+    }
+    .td_block_wrap .td-subcat-item a.td-cur-simple-item {
+	    color: #f45511;
+	}
+
+
+    
+    .td-grid-style-4 .entry-title
+    {
+        background-color: rgba(244, 85, 17, 0.7);
+    }
+
+
+    
+    .td-menu-background:before,
+    .td-search-background:before {
+        background: rgba(234,157,70,0.8);
+        background: -moz-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(234,157,70,0.8)), color-stop(100%, rgba(178,21,3,0.7)));
+        background: -webkit-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: -o-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: -ms-linear-gradient(top, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        background: linear-gradient(to bottom, rgba(234,157,70,0.8) 0%, rgba(178,21,3,0.7) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(234,157,70,0.8)', endColorstr='rgba(178,21,3,0.7)', GradientType=0 );
+    }
+
+    
+    .td-mobile-content .current-menu-item > a,
+    .td-mobile-content .current-menu-ancestor > a,
+    .td-mobile-content .current-category-ancestor > a,
+    #td-mobile-nav .td-menu-login-section a:hover,
+    #td-mobile-nav .td-register-section a:hover,
+    #td-mobile-nav .td-menu-socials-wrap a:hover i,
+    .td-search-close a:hover i {
+        color: #0a0303;
+    }
+
+    
+    .td-menu-background,
+    .td-search-background {
+        background-image: url('https://electrorules.com/wp-content/uploads/2021/06/12.jpg');
+    }
+
+    
+    ul.sf-menu > .menu-item > a {
+        font-family:Oswald;
+	font-size:14px;
+	line-height:48px;
+	font-weight:300;
+	
+    }
+    
+    .sf-menu ul .menu-item a {
+        font-family:Oswald;
+	font-size:13px;
+	font-weight:300;
+	text-transform:uppercase;
+	
+    }
+    
+    .white-popup-block:before {
+        background-image: url('https://electrorules.com/wp-content/uploads/2021/06/9.jpg');
+    }.td-header-style-12 .td-header-menu-wrap-full,
+    .td-header-style-12 .td-affix,
+    .td-grid-style-1.td-hover-1 .td-big-grid-post:hover .td-post-category,
+    .td-grid-style-5.td-hover-1 .td-big-grid-post:hover .td-post-category,
+    .td_category_template_3 .td-current-sub-category,
+    .td_category_template_8 .td-category-header .td-category a.td-current-sub-category,
+    .td_category_template_4 .td-category-siblings .td-category a:hover,
+     .td_block_big_grid_9.td-grid-style-1 .td-post-category,
+    .td_block_big_grid_9.td-grid-style-5 .td-post-category,
+    .td-grid-style-6.td-hover-1 .td-module-thumb:after,
+     .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .current-menu-item > a,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .current-menu-ancestor > a,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .current-category-ancestor > a,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > li > a:hover,
+    .tdm-menu-active-style5 .td-header-menu-wrap .sf-menu > .sfHover > a {
+        background-color: #f45511;
+    }
+    
+    .td_mega_menu_sub_cats .cur-sub-cat,
+    .td-mega-span h3 a:hover,
+    .td_mod_mega_menu:hover .entry-title a,
+    .header-search-wrap .result-msg a:hover,
+    .td-header-top-menu .td-drop-down-search .td_module_wrap:hover .entry-title a,
+    .td-header-top-menu .td-icon-search:hover,
+    .td-header-wrap .result-msg a:hover,
+    .top-header-menu li a:hover,
+    .top-header-menu .current-menu-item > a,
+    .top-header-menu .current-menu-ancestor > a,
+    .top-header-menu .current-category-ancestor > a,
+    .td-social-icon-wrap > a:hover,
+    .td-header-sp-top-widget .td-social-icon-wrap a:hover,
+    .td_mod_related_posts:hover h3 > a,
+    .td-post-template-11 .td-related-title .td-related-left:hover,
+    .td-post-template-11 .td-related-title .td-related-right:hover,
+    .td-post-template-11 .td-related-title .td-cur-simple-item,
+    .td-post-template-11 .td_block_related_posts .td-next-prev-wrap a:hover,
+    .td-category-header .td-pulldown-category-filter-link:hover,
+    .td-category-siblings .td-subcat-dropdown a:hover,
+    .td-category-siblings .td-subcat-dropdown a.td-current-sub-category,
+    .footer-text-wrap .footer-email-wrap a,
+    .footer-social-wrap a:hover,
+    .td_module_17 .td-read-more a:hover,
+    .td_module_18 .td-read-more a:hover,
+    .td_module_19 .td-post-author-name a:hover,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-2 .td-subcat-dropdown:hover .td-subcat-more i,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more span,
+    .td-pulldown-syle-3 .td-subcat-dropdown:hover .td-subcat-more i,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .current-category-ancestor > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .current-menu-ancestor > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .current-menu-item > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > .sfHover > a,
+    .tdm-menu-active-style3 .tdm-header.td-header-wrap .sf-menu > li > a:hover {
+        color: #f45511;
+    }
+    
+    .td-mega-menu-page .wpb_content_element ul li a:hover,
+    .td-theme-wrap .td-aj-search-results .td_module_wrap:hover .entry-title a,
+    .td-theme-wrap .header-search-wrap .result-msg a:hover {
+        color: #f45511 !important;
+    }
+    
+    .td_category_template_8 .td-category-header .td-category a.td-current-sub-category,
+    .td_category_template_4 .td-category-siblings .td-category a:hover,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .current-menu-item > a,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .current-menu-ancestor > a,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .current-category-ancestor > a,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > li > a:hover,
+    .tdm-menu-active-style4 .tdm-header .sf-menu > .sfHover > a {
+        border-color: #f45511;
+    }
+    
+    
+
+
+    
+    .td-header-wrap .td-header-top-menu-full,
+    .td-header-wrap .top-header-menu .sub-menu,
+    .tdm-header-style-1.td-header-wrap .td-header-top-menu-full,
+    .tdm-header-style-1.td-header-wrap .top-header-menu .sub-menu,
+    .tdm-header-style-2.td-header-wrap .td-header-top-menu-full,
+    .tdm-header-style-2.td-header-wrap .top-header-menu .sub-menu,
+    .tdm-header-style-3.td-header-wrap .td-header-top-menu-full,
+    .tdm-header-style-3.td-header-wrap .top-header-menu .sub-menu {
+        background-color: #000000;
+    }
+    .td-header-style-8 .td-header-top-menu-full {
+        background-color: transparent;
+    }
+    .td-header-style-8 .td-header-top-menu-full .td-header-top-menu {
+        background-color: #000000;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .td-header-wrap .td-header-top-menu-full .td-header-top-menu,
+    .td-header-wrap .td-header-top-menu-full {
+        border-bottom: none;
+    }
+
+
+    
+    .td-header-top-menu,
+    .td-header-top-menu a,
+    .td-header-wrap .td-header-top-menu-full .td-header-top-menu,
+    .td-header-wrap .td-header-top-menu-full a,
+    .td-header-style-8 .td-header-top-menu,
+    .td-header-style-8 .td-header-top-menu a,
+    .td-header-top-menu .td-drop-down-search .entry-title a {
+        color: #aaaaaa;
+    }
+
+    
+    .top-header-menu .current-menu-item > a,
+    .top-header-menu .current-menu-ancestor > a,
+    .top-header-menu .current-category-ancestor > a,
+    .top-header-menu li a:hover,
+    .td-header-sp-top-widget .td-icon-search:hover {
+        color: #ffffff;
+    }
+
+    
+    .td-header-wrap .td-header-sp-top-widget .td-icon-font,
+    .td-header-style-7 .td-header-top-menu .td-social-icon-wrap .td-icon-font {
+        color: #aaaaaa;
+    }
+
+    
+    .td-header-wrap .td-header-sp-top-widget i.td-icon-font:hover {
+        color: #ffffff;
+    }
+
+
+    
+    .td-header-wrap .td-header-menu-wrap-full,
+    .td-header-menu-wrap.td-affix,
+    .td-header-style-3 .td-header-main-menu,
+    .td-header-style-3 .td-affix .td-header-main-menu,
+    .td-header-style-4 .td-header-main-menu,
+    .td-header-style-4 .td-affix .td-header-main-menu,
+    .td-header-style-8 .td-header-menu-wrap.td-affix,
+    .td-header-style-8 .td-header-top-menu-full {
+        background-color: #ffffff;
+    }
+    .td-boxed-layout .td-header-style-3 .td-header-menu-wrap,
+    .td-boxed-layout .td-header-style-4 .td-header-menu-wrap,
+    .td-header-style-3 .td_stretch_content .td-header-menu-wrap,
+    .td-header-style-4 .td_stretch_content .td-header-menu-wrap {
+    	background-color: #ffffff !important;
+    }
+    @media (min-width: 1019px) {
+        .td-header-style-1 .td-header-sp-recs,
+        .td-header-style-1 .td-header-sp-logo {
+            margin-bottom: 28px;
+        }
+    }
+    @media (min-width: 768px) and (max-width: 1018px) {
+        .td-header-style-1 .td-header-sp-recs,
+        .td-header-style-1 .td-header-sp-logo {
+            margin-bottom: 14px;
+        }
+    }
+    .td-header-style-7 .td-header-top-menu {
+        border-bottom: none;
+    }
+
+    
+    .td-header-wrap .td-header-menu-wrap .sf-menu > li > a,
+    .td-header-wrap .td-header-menu-social .td-social-icon-wrap a,
+    .td-header-style-4 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-style-5 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-style-6 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-style-12 .td-header-menu-social .td-social-icon-wrap i,
+    .td-header-wrap .header-search-wrap #td-header-search-button .td-icon-search {
+        color: #aaaaaa;
+    }
+    .td-header-wrap .td-header-menu-social + .td-search-wrapper #td-header-search-button:before {
+      background-color: #aaaaaa;
+    }
+    
+    
+    
+    ul.sf-menu > .td-menu-item > a,
+    .td-theme-wrap .td-header-menu-social {
+        font-family:Oswald;
+	font-size:14px;
+	line-height:48px;
+	font-weight:300;
+	
+    }
+    
+    .sf-menu ul .td-menu-item a {
+        font-family:Oswald;
+	font-size:13px;
+	font-weight:300;
+	text-transform:uppercase;
+	
+    }
+    
+    
+    
+    .td-theme-wrap .sf-menu .td-normal-menu .sub-menu .td-menu-item > a {
+        color: #aaaaaa;
+    }
+    
+    .td-theme-wrap .sf-menu .td-normal-menu .td-menu-item > a:hover,
+    .td-theme-wrap .sf-menu .td-normal-menu .sfHover > a,
+    .td-theme-wrap .sf-menu .td-normal-menu .current-menu-ancestor > a,
+    .td-theme-wrap .sf-menu .td-normal-menu .current-category-ancestor > a,
+    .td-theme-wrap .sf-menu .td-normal-menu .current-menu-item > a {
+        color: #000000;
+    }
+    
+    
+   
+    
+    .td-footer-wrapper::before {
+        background-image: url('https://electrorules.com/wp-content/uploads/2021/06/wp1971411-300x169.jpg');
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-size: 100% auto;
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-position: center center;
+    }
+
+    
+    .td-footer-wrapper::before {
+        opacity: 0.06;
+    }
+    
+    
+    
+    
+    
+    .top-header-menu > li > a,
+    .td-weather-top-widget .td-weather-now .td-big-degrees,
+    .td-weather-top-widget .td-weather-header .td-weather-city,
+    .td-header-sp-top-menu .td_data_time {
+        font-size:12px;
+	line-height:30px;
+	font-weight:normal;
+	
+    }
+    
+    .td_mod_mega_menu .item-details a {
+        font-family:"Open Sans";
+	font-size:13px;
+	line-height:16px;
+	font-weight:bold;
+	
+    }
+    
+    .td_mega_menu_sub_cats .block-mega-child-cats a {
+        font-family:Oswald;
+	font-weight:300;
+	text-transform:uppercase;
+	
+    }
+    
+    .top-header-menu > li,
+    .td-header-sp-top-menu,
+    #td-outer-wrap .td-header-sp-top-widget .td-search-btns-wrap,
+    #td-outer-wrap .td-header-sp-top-widget .td-social-icon-wrap {
+        line-height: 30px;
+    }
+    
+    
+    
+    .td_module_1 .td-module-title {
+    	font-family:"Open Sans";
+	font-size:16px;
+	line-height:20px;
+	font-weight:800;
+	
+    }
+    
+    .td_module_4 .td-module-title {
+    	font-size:16px;
+	line-height:20px;
+	font-weight:800;
+	
+    }
+    
+    .td_module_8 .td-module-title {
+    	font-size:13px;
+	line-height:18px;
+	font-weight:normal;
+	
+    }
+    
+    .td-post-template-3 .td-post-header .entry-title {
+        font-size:54px;
+	line-height:58px;
+	font-weight:800;
+	
+    }
+    
+    .post blockquote p,
+    .page blockquote p,
+    .td-post-text-content blockquote p {
+        font-weight:500;
+	
+    }
+    
+    .post .td-post-next-prev-content a {
+        font-weight:bold;
+	
+    }
+    
+    .td-trending-now-display-area .entry-title {
+    	font-family:"Open Sans";
+	font-size:14px;
+	font-weight:bold;
+	
+    }
+    
+    .tdm-menu-active-style2 .tdm-header ul.sf-menu > .td-menu-item,
+    .tdm-menu-active-style4 .tdm-header ul.sf-menu > .td-menu-item,
+    .tdm-header .tdm-header-menu-btns,
+    .tdm-header-style-1 .td-main-menu-logo a,
+    .tdm-header-style-2 .td-main-menu-logo a,
+    .tdm-header-style-3 .td-main-menu-logo a {
+        line-height: 48px;
+    }
+    .tdm-header-style-1 .td-main-menu-logo,
+    .tdm-header-style-2 .td-main-menu-logo,
+    .tdm-header-style-3 .td-main-menu-logo {
+        height: 48px;
+    }
+    @media (min-width: 768px) {
+        .td-header-style-4 .td-main-menu-logo img,
+        .td-header-style-5 .td-main-menu-logo img,
+        .td-header-style-6 .td-main-menu-logo img,
+        .td-header-style-7 .td-header-sp-logo img,
+        .td-header-style-12 .td-main-menu-logo img {
+            max-height: 48px;
+        }
+        .td-header-style-4 .td-main-menu-logo,
+        .td-header-style-5 .td-main-menu-logo,
+        .td-header-style-6 .td-main-menu-logo,
+        .td-header-style-7 .td-header-sp-logo,
+        .td-header-style-12 .td-main-menu-logo {
+            height: 48px;
+        }
+        .td-header-style-4 .td-main-menu-logo a,
+        .td-header-style-5 .td-main-menu-logo a,
+        .td-header-style-6 .td-main-menu-logo a,
+        .td-header-style-7 .td-header-sp-logo a,
+        .td-header-style-7 .td-header-sp-logo img,
+        .td-header-style-12 .td-main-menu-logo a,
+        .td-header-style-12 .td-header-menu-wrap .sf-menu > li > a {
+            line-height: 48px;
+        }
+        .td-header-style-7 .sf-menu,
+        .td-header-style-7 .td-header-menu-social {
+            margin-top: 0;
+        }
+        .td-header-style-7 #td-top-search {
+            top: 0;
+            bottom: 0;
+        }
+        .td-header-wrap .header-search-wrap #td-header-search-button .td-icon-search {
+            line-height: 48px;
+        }
+        .tdm-header-style-1 .td-main-menu-logo img, 
+        .tdm-header-style-2 .td-main-menu-logo img, 
+        .tdm-header-style-3 .td-main-menu-logo img {
+            max-height: 48px;
+        }
+    }
+
+
+
+/* Style generated by theme for demo: gadgets */
+
+.td-gadgets .td-live-theme-demos .td-skin-buy a,
+		.td-gadgets .td_module_8 .entry-title a:before,
+		.td-gadgets .td-ss-main-sidebar .widget_recent_entries li:before {
+			background-color: #f45511;
+		}
+</style>
+
+<script data-ad-client="ca-pub-9177198033584465" async="" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/f(3).txt" data-checked-head="true"></script>
+
+
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "WebSite",
+                    "@id": "https://electrorules.com/",
+                    "name": "Home"
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                    "item": {
+                    "@type": "WebPage",
+                    "@id": "https://electrorules.com/category/microcontroller/",
+                    "name": "Microcontroller"
+                }
+            }
+            ,{
+                "@type": "ListItem",
+                "position": 3,
+                    "item": {
+                    "@type": "WebPage",
+                    "@id": "https://electrorules.com/category/microcontroller/esp-32-projects-and-tutorials/",
+                    "name": "ESP32"                                
+                }
+            }
+            ,{
+                "@type": "ListItem",
+                "position": 4,
+                    "item": {
+                    "@type": "WebPage",
+                    "@id": "https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/",
+                    "name": "ESP32 with PIR Motion Sensor using Interrupts and Timers"                                
+                }
+            }    
+        ]
+    }
+</script>
+		<style type="text/css" id="wp-custom-css">
+			
+
+
+
+body {
+  background-color: #FFFF;
+}		</style>
+		
+<!-- Button style compiled by theme -->
+
+<style>
+    .tdm_block_column_content:hover .tdm-col-content-title-url .tdm-title,
+                .tds-button2 .tdm-btn-text,
+                .tds-button2 i,
+                .tds-button5:hover .tdm-btn-text,
+                .tds-button5:hover i,
+                .tds-button6 .tdm-btn-text,
+                .tds-button6 i,
+                .tdm_block_list .tdm-list-item i,
+                .tdm_block_pricing .tdm-pricing-feature i,
+                body .tdm-social-item i {
+                    color: #f45511;
+                }
+                .tds-button1,
+                .tds-button6:after,
+                .tds-title2 .tdm-title-line:after,
+                .tds-title3 .tdm-title-line:after,
+                .tdm_block_pricing.tdm-pricing-featured:before,
+                .tdm_block_pricing.tds_pricing2_block.tdm-pricing-featured .tdm-pricing-header,
+                .tds-progress-bar1 .tdm-progress-bar:after,
+                .tds-progress-bar2 .tdm-progress-bar:after,
+                .tds-social3 .tdm-social-item {
+                    background-color: #f45511;
+                }
+                .tds-button2:before,
+                .tds-button6:before,
+                .tds-progress-bar3 .tdm-progress-bar:after {
+                  border-color: #f45511;
+                }
+                .tdm-btn-style1 {
+					background-color: #f45511;
+				}
+				.tdm-btn-style2:before {
+				    border-color: #f45511;
+				}
+				.tdm-btn-style2 {
+				    color: #f45511;
+				}
+				.tdm-btn-style3 {
+				    -webkit-box-shadow: 0 2px 16px #f45511;
+                    -moz-box-shadow: 0 2px 16px #f45511;
+                    box-shadow: 0 2px 16px #f45511;
+				}
+				.tdm-btn-style3:hover {
+				    -webkit-box-shadow: 0 4px 26px #f45511;
+                    -moz-box-shadow: 0 4px 26px #f45511;
+                    box-shadow: 0 4px 26px #f45511;
+				}
+</style>
+
+	<style id="tdw-css-placeholder"></style><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/OOU4XAFfeAV4kM4+W9WBwNAHqq/bvtrRcJ1wpnNyO/i076BSUy1d14l2kBEgVmEuvxojSpD23172C6hBg2AQYAAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AwrB+XVH/KV6HfZNVtSEqlUJi3yUbtCp0/TJRj+38NDIw19/9P1h7ECTtdLdhIzG0Bsl4n/0rVmttJtGUCcewgAAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="Ax15QOERqai2A5XWrDY38Eg07xh2T0pkhpDPJuDlxr7D2Ka8wHvklgK7tTPZOnT+8H31lwHto5JpvYV8jRn1WgIAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><link rel="preload" href="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/f(4).txt" as="script"><script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/f(4).txt"></script></head><iframe id="google_esf" name="google_esf" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/zrt_lookup.html" style="display: none;"></iframe>
+
+<body class="post-template-default single single-post postid-1196 single-format-standard td-standard-pack esp32-with-pir-motion-sensor-using-interrupts-and-timers global-block-template-9 td-gadgets single_template_5 white-menu td-full-layout body-td-affix td-js-loaded" itemscope="itemscope" itemtype="https://schema.org/WebPage">
+
+        <div class="td-scroll-up td-scroll-up-visible" style="display:none;"><i class="td-icon-menu-up"></i></div>
+
+    <div class="td-menu-background"></div>
+<div id="td-mobile-nav">
+    <div class="td-mobile-container">
+        <!-- mobile menu top section -->
+        <div class="td-menu-socials-wrap">
+            <!-- socials -->
+            <div class="td-menu-socials">
+                
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" title="Facebook">
+                <i class="td-icon-font td-icon-facebook"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" title="Instagram">
+                <i class="td-icon-font td-icon-instagram"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" title="Twitter">
+                <i class="td-icon-font td-icon-twitter"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" title="Vimeo">
+                <i class="td-icon-font td-icon-vimeo"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" title="Youtube">
+                <i class="td-icon-font td-icon-youtube"></i>
+            </a>
+        </span>            </div>
+            <!-- close button -->
+            <div class="td-mobile-close">
+                <a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" aria-label="Close"><i class="td-icon-close-mobile"></i></a>
+            </div>
+        </div>
+
+        <!-- login section -->
+        
+        <!-- menu section -->
+        <div class="td-mobile-content">
+            <div class="menu-td-demo-header-menu-container"><ul id="menu-td-demo-header-menu" class="td-mobile-main-menu"><li id="menu-item-1834" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-first menu-item-1834"><a href="https://electrorules.com/electronics-tutorials/">Electronic Articles</a></li>
+<li id="menu-item-1835" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1835"><a href="https://electrorules.com/esp8266-tutorials/">ESP8266</a></li>
+<li id="menu-item-1836" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1836"><a href="https://electrorules.com/esp32-tutorials/">ESP32</a></li>
+<li id="menu-item-1837" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1837"><a href="https://electrorules.com/arduino-tutorials/">Arduino</a></li>
+<li id="menu-item-1838" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1838"><a href="https://electrorules.com/projects/">Projects</a></li>
+</ul></div>        </div>
+    </div>
+
+    <!-- register/login section -->
+    </div>    <div class="td-search-background"></div>
+<div class="td-search-wrap-mob">
+	<div class="td-drop-down-search">
+		<form method="get" class="td-search-form" action="https://electrorules.com/">
+			<!-- close button -->
+			<div class="td-search-close">
+				<a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#"><i class="td-icon-close-mobile"></i></a>
+			</div>
+			<div role="search" class="td-search-input">
+				<span>Search</span>
+				<input id="td-header-search-mob" type="text" value="" name="s" autocomplete="off">
+			</div>
+		</form>
+		<div id="td-aj-search-mob" class="td-ajax-search-flex"></div>
+	</div>
+</div>
+
+    <div id="td-outer-wrap" class="td-theme-wrap">
+    
+        
+            <div class="tdc-header-wrap ">
+
+            <!--
+Header style 3
+-->
+
+
+<div class="td-header-wrap td-header-style-3 ">
+    
+    <div class="td-header-top-menu-full td-container-wrap ">
+        <div class="td-container td-header-row td-header-top-menu">
+            <!-- LOGIN MODAL -->
+
+                <div id="login-form" class="white-popup-block mfp-hide mfp-with-anim">
+                    <div class="td-login-wrap">
+                        <a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" aria-label="Back" class="td-back-button"><i class="td-icon-modal-back"></i></a>
+                        <div id="td-login-div" class="td-login-form-div td-display-block">
+                            <div class="td-login-panel-title">Sign in</div>
+                            <div class="td-login-panel-descr">Welcome! Log into your account</div>
+                            <div class="td_display_err"></div>
+                            <form action="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" method="post">
+                            <div class="td-login-inputs"><input class="td-login-input" autocomplete="username" type="text" name="login_email" id="login_email" value="" required=""><label for="login_email">your username</label></div>
+	                        <div class="td-login-inputs"><input class="td-login-input" autocomplete="current-password" type="password" name="login_pass" id="login_pass" value="" required=""><label for="login_pass">your password</label></div>
+                            <input type="button" name="login_button" id="login_button" class="wpb_button btn td-login-button" value="Login">
+                            </form>
+                            <div class="td-login-info-text"><a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" id="forgot-pass-link">Forgot your password? Get help</a></div>
+                            
+                            
+                            
+                            
+                        </div>
+
+                        
+
+                         <div id="td-forgot-pass-div" class="td-login-form-div td-display-none">
+                            <div class="td-login-panel-title">Password recovery</div>
+                            <div class="td-login-panel-descr">Recover your password</div>
+                            <div class="td_display_err"></div>
+                            <div class="td-login-inputs"><input class="td-login-input" type="text" name="forgot_email" id="forgot_email" value="" required=""><label for="forgot_email">your email</label></div>
+                            <input type="button" name="forgot_button" id="forgot_button" class="wpb_button btn td-login-button" value="Send My Password">
+                            <div class="td-login-info-text">A password will be e-mailed to you.</div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                        </div>
+    </div>
+
+    <div class="td-banner-wrap-full td-container-wrap ">
+        <div class="td-container td-header-row td-header-header">
+            <div class="td-header-sp-logo">
+                        <a class="td-main-logo" href="https://electrorules.com/">
+            <img class="td-retina-data td-retina-version" data-retina="https://electrorules.com/wp-content/uploads/2021/06/Electrorules-300x86.png" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/Electrorules-300x86.png" alt="Website for Electronics and DIY activites : Electrorules.com" title="Website for Electronics and DIY activites : Electrorules.com">
+            <span class="td-visual-hidden">Electrorules</span>
+        </a>
+                </div>
+                    </div>
+    </div>
+
+    <div class="td-header-menu-wrap-full td-container-wrap " style="height: 48px;">
+        
+        <div class="td-header-menu-wrap td-affix" style="transform: translate3d(0px, -48px, 0px);">
+            <div class="td-container td-header-row td-header-main-menu black-menu">
+                <div id="td-header-menu" role="navigation">
+    <div id="td-top-mobile-toggle"><a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#"><i class="td-icon-font td-icon-mobile"></i></a></div>
+    <div class="td-main-menu-logo td-logo-in-header td-logo-sticky">
+        		<a class="td-mobile-logo td-sticky-header" href="https://electrorules.com/">
+			<img class="td-retina-data td-retina-version" data-retina="https://electrorules.com/wp-content/uploads/2021/06/mobileelectrorules-300x78.png" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/mobileelectrorules-300x78.png" alt="Website for Electronics and DIY activites : Electrorules.com" title="Website for Electronics and DIY activites : Electrorules.com">
+		</a>
+			<a class="td-header-logo td-sticky-header" href="https://electrorules.com/">
+			<img class="td-retina-data td-retina-version" data-retina="https://electrorules.com/wp-content/uploads/2021/06/Electrorules-300x86.png" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/Electrorules-300x86.png" alt="Website for Electronics and DIY activites : Electrorules.com" title="Website for Electronics and DIY activites : Electrorules.com">
+		</a>
+	    </div>
+    <div class="menu-td-demo-header-menu-container"><ul id="menu-td-demo-header-menu-1" class="sf-menu sf-js-enabled"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-first td-menu-item td-normal-menu menu-item-1834"><a href="https://electrorules.com/electronics-tutorials/">Electronic Articles</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page td-menu-item td-normal-menu menu-item-1835"><a href="https://electrorules.com/esp8266-tutorials/">ESP8266</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page td-menu-item td-normal-menu menu-item-1836"><a href="https://electrorules.com/esp32-tutorials/">ESP32</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page td-menu-item td-normal-menu menu-item-1837"><a href="https://electrorules.com/arduino-tutorials/">Arduino</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page td-menu-item td-normal-menu menu-item-1838"><a href="https://electrorules.com/projects/">Projects</a></li>
+</ul></div></div>
+
+
+    <div class="header-search-wrap">
+        <div class="td-search-btns-wrap">
+            <a id="td-header-search-button" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" role="button" class="dropdown-toggle " data-toggle="dropdown"><i class="td-icon-search"></i></a>
+            <a id="td-header-search-button-mob" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" class="dropdown-toggle " data-toggle="dropdown"><i class="td-icon-search"></i></a>
+        </div>
+
+        <div class="td-drop-down-search" aria-labelledby="td-header-search-button">
+            <form method="get" class="td-search-form" action="https://electrorules.com/">
+                <div role="search" class="td-head-form-search-wrap">
+                    <input id="td-header-search" type="text" value="" name="s" autocomplete="off"><input class="wpb_button wpb_btn-inverse btn" type="submit" id="td-header-search-top" value="Search">
+                </div>
+            </form>
+            <div id="td-aj-search"></div>
+        </div>
+    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+            </div>
+
+            
+<div class="td-main-content-wrap td-container-wrap">
+
+    <div class="td-container td-post-template-5 ">
+        <div class="td-crumb-container"><div class="entry-crumbs"><span><a title="" class="entry-crumb" href="https://electrorules.com/">Home</a></span> <i class="td-icon-right td-bread-sep"></i> <span><a title="View all posts in Microcontroller" class="entry-crumb" href="https://electrorules.com/category/microcontroller/">Microcontroller</a></span> <i class="td-icon-right td-bread-sep"></i> <span><a title="View all posts in ESP32" class="entry-crumb" href="https://electrorules.com/category/microcontroller/esp-32-projects-and-tutorials/">ESP32</a></span> <i class="td-icon-right td-bread-sep td-bred-no-url-last"></i> <span class="td-bred-no-url-last">ESP32 with PIR Motion Sensor using Interrupts and Timers</span></div></div>
+            <div class="td-pb-row">
+                                            <div class="td-pb-span8 td-main-content" role="main">
+                                <div class="td-ss-main-content"><div class="clearfix"></div>
+                                    
+    <article id="post-1196" class="post-1196 post type-post status-publish format-standard has-post-thumbnail category-esp-32-projects-and-tutorials" itemscope="" itemtype="https://schema.org/Article">
+        <div class="td-post-header">
+
+            <ul class="td-category"><li class="entry-category"><a href="https://electrorules.com/category/microcontroller/esp-32-projects-and-tutorials/">ESP32</a></li></ul>
+            <header class="td-post-title">
+                <h1 class="entry-title">ESP32 with PIR Motion Sensor using Interrupts and Timers</h1>
+
+                
+
+                <div class="td-module-meta-info">
+                                        <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-07-01T11:14:35+00:00">July 1, 2021</time></span>                                                        </div>
+
+            </header>
+
+        </div>
+
+        
+
+        <div class="td-post-content tagdiv-type">
+            
+<p>This tutorial shows how to detect motion with the ESP32 using a PIR motion sensor. In this example, when motion is detected (an interrupt is triggered), the ESP32 starts a timer and turns an LED on for a predefined number of seconds. When the timer finishes counting down, the LED is automatically turned off.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/ESP32_PIR_featured.jpg" alt="" class="wp-image-68496"></figure></div>
+
+
+
+<p>With this example we’ll also explore two important concepts: interrupts and timers.</p>
+
+
+
+<p>Before proceeding with this tutorial you should have the ESP32 add-on installed in your Arduino IDE.If you do not have it ,click <a href="https://electrorules.com/installing-the-esp32-board-addon-in-arduino-ideguide-for-all-operating-systems/">here</a> to install/view installation guides.</p>
+
+
+
+<p></p>
+
+
+
+<h2 id="h-introducing-interrupts">Introducing Interrupts</h2>
+
+
+
+<p>To trigger an event with a PIR motion sensor, you use interrupts. Interrupts are useful for making things happen automatically in microcontroller programs, and can help solve timing problems.</p>
+
+
+
+<p>With interrupts you don’t need to constantly check the current value of a pin. With interrupts, when a change is detected, an event is triggered (a function is called).</p>
+
+
+
+<p>To set an interrupt in the Arduino IDE, you use the&nbsp;<strong>attachInterrupt()</strong>&nbsp;function, that accepts as arguments: the GPIO pin, the name of the function to be executed, and mode:</p>
+
+
+
+<pre class="wp-block-code"><code>attachInterrupt(digitalPinToInterrupt(GPIO), function, mode);</code></pre>
+
+
+
+<p><strong>GPIO Interrupt</strong></p>
+
+
+
+<p>The first argument is a GPIO number. Normally, you should use&nbsp;digitalPinToInterrupt(GPIO)&nbsp;to set the actual GPIO as an interrupt pin. For example, if you want to use&nbsp;GPIO 27&nbsp;as an interrupt, use:</p>
+
+
+
+<pre class="wp-block-code"><code>digitalPinToInterrupt(27)</code></pre>
+
+
+
+<p>With an ESP32 board, all the pins highlighted with a red rectangle in the following figure can be configured as interrupt pins. In this example we’ll use&nbsp;GPIO 27&nbsp;as an interrupt connected to the PIR Motion sensor.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/pins_used_as_interrupts.png" alt="" class="wp-image-68484"></figure></div>
+
+
+
+<p><strong>Function to be triggered</strong></p>
+
+
+
+<p>The second argument of the&nbsp;attachInterrupt()&nbsp;function is the name of the function that will be called every time the interrupt is triggered.</p>
+
+
+
+<p><strong>Mode</strong></p>
+
+
+
+<p>The third argument is the mode. There are 5 different modes:</p>
+
+
+
+<ul><li>LOW: to trigger the interrupt whenever the pin is LOW;</li><li>HIGH: to trigger the interrupt whenever the pin is HIGH;</li><li>CHANGE: to trigger the interrupt whenever the pin changes value – for example from HIGH to LOW or LOW to HIGH;</li><li>FALLING: for when the pin goes from HIGH to LOW;</li><li>RISING: to trigger when the pin goes from LOW to HIGH.</li></ul>
+
+
+
+<p>For this example will be using the RISING mode, because when the PIR motion sensor detects motion, the GPIO it is connected to goes from LOW to HIGH.</p>
+
+
+
+<h2 id="h-introducing-timers">Introducing Timers</h2>
+
+
+
+<p>In this example we’ll also introduce timers. We want the LED to stay on for a predetermined number of seconds after motion is detected. Instead of using a&nbsp;delay()&nbsp;function that blocks your code and doesn’t allow you to do anything else for a determined number of seconds, we should use a timer.</p>
+
+
+
+<h3 id="h-the-delay-function">The delay() function</h3>
+
+
+
+<p>You should be familiar with the&nbsp;delay()&nbsp;function as it is widely used. This function is pretty straightforward to use. It accepts a single int number as an argument. This number represents the time in milliseconds the program has to wait until moving on to the next line of code.</p>
+
+
+
+<pre class="wp-block-code"><code>delay(time in milliseconds)</code></pre>
+
+
+
+<p>When you do&nbsp;delay(1000)&nbsp;your program stops on that line for 1 second.</p>
+
+
+
+<p>delay()&nbsp;is a blocking function. Blocking functions prevent a program from doing anything else until that particular task is completed. If you need multiple tasks to occur at the same time, you cannot use&nbsp;delay().</p>
+
+
+
+<p>For most projects you should avoid using delays and use timers instead.</p>
+
+
+
+<h3 id="h-the-millis-function">The millis() function</h3>
+
+
+
+<p>Using a function called&nbsp;millis()&nbsp;you can return the number of milliseconds that have passed since the program first started.</p>
+
+
+
+<pre class="wp-block-code"><code>millis()</code></pre>
+
+
+
+<p>Why is that function useful? Because by using some math, you can easily verify how much time has passed without blocking your code.</p>
+
+
+
+<h3 id="h-blinking-an-led-with-millis">Blinking an LED with millis()</h3>
+
+
+
+<p>The following snippet of code shows how you can use the&nbsp;millis()&nbsp;function to create a blink LED project. It turns an LED on for 1000 milliseconds, and then turns it off.</p>
+
+
+
+<pre class="wp-block-code"><code>
+
+// constants won't change. Used here to set a pin number :
+const int ledPin =  26;      // the number of the LED pin
+
+// Variables will change :
+int ledState = LOW;             // ledState used to set the LED
+
+// Generally, you should use "unsigned long" for variables that hold time
+// The value will quickly become too large for an int to store
+unsigned long previousMillis = 0;        // will store last time LED was updated
+
+// constants won't change :
+const long interval = 1000;           // interval at which to blink (milliseconds)
+
+void setup() {
+  // set the digital pin as output:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // here is where you'd put code that needs to be running all the time.
+
+  // check to see if it's time to blink the LED; that is, if the
+  // difference between the current time and last time you blinked
+  // the LED is bigger than the interval at which you want to
+  // blink the LED.
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis &gt;= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+
+    // if the LED is off turn it on and vice-versa:
+    if (ledState == LOW) {
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
+    }
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(ledPin, ledState);
+  }
+}
+</code></pre>
+
+
+
+<p></p>
+
+
+
+<h4 id="h-how-the-code-works">How the code works</h4>
+
+
+
+<p>Let’s take a closer look at this blink sketch that works without a&nbsp;delay()&nbsp;function (it uses the&nbsp;millis()&nbsp;function instead).</p>
+
+
+
+<p>Basically, this code subtracts the previous recorded time (previousMillis) from the current time (currentMillis). If the remainder is greater than the interval (in this case, 1000 milliseconds), the program updates the&nbsp;previousMillis&nbsp;variable to the current time, and either turns the LED on or off.</p>
+
+
+
+<pre class="wp-block-code"><code>if (currentMillis - previousMillis &gt;= interval) {
+  // save the last time you blinked the LED
+  previousMillis = currentMillis;
+  (...)</code></pre>
+
+
+
+<p>Because this snippet is non-blocking, any code that’s located outside of that first&nbsp;if&nbsp;statement should work normally.</p>
+
+
+
+<p>You should now be able to understand that you can add other tasks to your&nbsp;loop()&nbsp;function and your code will still be blinking the LED every one second.</p>
+
+
+
+<p>You can upload this code to your ESP32 and assemble the following schematic diagram to test it and modify the number of milliseconds to see how it works.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><a href="https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2018/07/blink_without_delay_bb.png?quality=100&amp;strip=all&amp;ssl=1"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/blink_without_delay_bb.png" alt="" class="wp-image-68481"></a></figure></div>
+
+
+
+<p><strong>Note</strong>: If you’ve experienced any issues uploading code to your ESP32, take a look at this <a href="https://electrorules.com/getting-started-with-the-esp32-development-board/">page</a></p>
+
+
+
+<h2 id="h-esp32-with-pir-motion-sensor">ESP32 with PIR Motion Sensor</h2>
+
+
+
+<p>After understanding these concepts: interrupts and timers, let’s continue with the project.</p>
+
+
+
+<h3 id="h-schematic">Schematic</h3>
+
+
+
+<p>The circuit we’ll build is easy to assemble, we’ll be using an LED with a resistor. The LED is connected to&nbsp;GPIO 26. We’ll be using the&nbsp;Mini AM312 PIR Motion Sensor&nbsp;that operates at 3.3V.&nbsp; It will be connected to&nbsp;GPIO 27. Simply follow the next schematic diagram.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/pir_esp32_interrupts.jpg" alt="" class="wp-image-68486"></figure></div>
+
+
+
+<p>Important:&nbsp;the&nbsp;Mini AM312 PIR Motion Sensor&nbsp;used in this project operates at 3.3V. However, if you’re using another PIR motion sensor like the&nbsp;HC-SR501, it operates at 5V. You can either&nbsp;modify it to operate at 3.3V&nbsp;or simply power it using the Vin pin<strong>.</strong></p>
+
+
+
+<p>The following figure shows the AM312 PIR motion sensor pinout.</p>
+
+
+
+<figure class="wp-block-image"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/mini-pir-pinout.jpg" alt="AM312 mini pir pinout" class="wp-image-85870"></figure>
+
+
+
+<h3 id="h-uploading-the-code">Uploading the Code</h3>
+
+
+
+<p>After wiring the circuit as shown in the schematic diagram, copy the code provided to your Arduino IDE.</p>
+
+
+
+<p>You can upload the code as it is, or you can modify the number of seconds the LED is lit after detecting motion. Simply change the&nbsp;timeSeconds&nbsp;variable with the number of seconds you want.</p>
+
+
+
+<pre class="wp-block-code"><code>#define timeSeconds 10
+
+// Set GPIOs for LED and PIR Motion Sensor
+const int led = 26;
+const int motionSensor = 27;
+
+// Timer: Auxiliary variables
+unsigned long now = millis();
+unsigned long lastTrigger = 0;
+boolean startTimer = false;
+
+// Checks if motion was detected, sets LED HIGH and starts a timer
+void IRAM_ATTR detectsMovement() {
+  Serial.println("MOTION DETECTED!!!");
+  digitalWrite(led, HIGH);
+  startTimer = true;
+  lastTrigger = millis();
+}
+
+void setup() {
+  // Serial port for debugging purposes
+  Serial.begin(115200);
+  
+  // PIR Motion Sensor mode INPUT_PULLUP
+  pinMode(motionSensor, INPUT_PULLUP);
+  // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
+  attachInterrupt(digitalPinToInterrupt(motionSensor), detectsMovement, RISING);
+
+  // Set LED to LOW
+  pinMode(led, OUTPUT);
+  digitalWrite(led, LOW);
+}
+
+void loop() {
+  // Current time
+  now = millis();
+  // Turn off the LED after the number of seconds defined in the timeSeconds variable
+  if(startTimer &amp;&amp; (now - lastTrigger &gt; (timeSeconds*1000))) {
+    Serial.println("Motion stopped...");
+    digitalWrite(led, LOW);
+    startTimer = false;
+  }
+}
+</code></pre>
+
+
+
+<p></p>
+
+
+
+<p><strong>Note:&nbsp;</strong>if you’ve experienced any issues uploading code to your ESP32, take a look at this <a href="https://electrorules.com/getting-started-with-the-esp32-development-board/">link</a></p>
+
+
+
+<h3 id="h-how-the-code-works-1">How the Code Works</h3>
+
+
+
+<p>Let’s take a look at the code. Start by assigning two GPIO pins to the&nbsp;led&nbsp;and&nbsp;motionSensor&nbsp;variables.</p>
+
+
+
+<pre class="wp-block-code"><code>// Set GPIOs for LED and PIR Motion Sensor
+const int led = 26;
+const int motionSensor = 27;</code></pre>
+
+
+
+<p>Then, create variables that will allow you set a timer to turn the LED off after motion is detected.</p>
+
+
+
+<pre class="wp-block-code"><code>// Timer: Auxiliar variables
+long now = millis();
+long lastTrigger = 0;
+boolean startTimer = false;</code></pre>
+
+
+
+<p>The&nbsp;now&nbsp;variable holds the current time. The&nbsp;lastTrigger&nbsp;variable holds the time when the PIR sensor detects motion. The&nbsp;startTimer&nbsp;is a boolean variable that starts the timer when motion is detected.</p>
+
+
+
+<h4 id="h-setup">setup()</h4>
+
+
+
+<p>In the&nbsp;setup(), start by initializing the Serial port at 115200 baud rate.</p>
+
+
+
+<pre class="wp-block-code"><code>Serial.begin(115200);</code></pre>
+
+
+
+<p>Set the PIR Motion sensor as an INPUT PULLUP.</p>
+
+
+
+<pre class="wp-block-code"><code>pinMode(motionSensor, INPUT_PULLUP);</code></pre>
+
+
+
+<p>To set the PIR sensor pin as an interrupt, use the&nbsp;attachInterrupt()&nbsp;function as described earlier.</p>
+
+
+
+<pre class="wp-block-code"><code>attachInterrupt(digitalPinToInterrupt(motionSensor), detectsMovement, RISING);</code></pre>
+
+
+
+<p>The pin that will detect motion is&nbsp;GPIO 27&nbsp;and it will call the function&nbsp;detectsMovement()&nbsp;on RISING mode.</p>
+
+
+
+<p>The LED is an OUTPUT whose state starts at LOW.</p>
+
+
+
+<pre class="wp-block-code"><code>pinMode(led, OUTPUT);
+digitalWrite(led, LOW);</code></pre>
+
+
+
+<h4 id="h-loop">loop()</h4>
+
+
+
+<p>The&nbsp;loop()&nbsp;function is constantly running over and over again. In every loop, the&nbsp;now&nbsp;variable is updated with the current time.</p>
+
+
+
+<pre class="wp-block-code"><code>now = millis();</code></pre>
+
+
+
+<p>Nothing else is done in the&nbsp;loop().</p>
+
+
+
+<p>But, when motion is detected, the&nbsp;detectsMovement()&nbsp;function is called because we’ve set an interrupt previously on the&nbsp;setup().</p>
+
+
+
+<p>The&nbsp;detectsMovement()&nbsp;function prints a message in the Serial Monitor, turns the LED on, sets the&nbsp;startTimer&nbsp;boolean variable to&nbsp;true&nbsp;and updates the&nbsp;lastTrigger&nbsp;variable with the current time.</p>
+
+
+
+<pre class="wp-block-code"><code>void IRAM_ATTR detectsMovement() {
+  Serial.println("MOTION DETECTED!!!");
+  digitalWrite(led, HIGH);
+  startTimer = true;
+  lastTrigger = millis();
+}</code></pre>
+
+
+
+<p><strong>Note:</strong>&nbsp;IRAM_ATTR&nbsp;is used to run the interrupt code in RAM, otherwise code is stored in flash and it’s slower.</p>
+
+
+
+<p>After this step, the code goes back to the&nbsp;loop().</p>
+
+
+
+<p>This time, the&nbsp;startTimer&nbsp;variable is true. So, when the time defined in seconds has passed (since motion was detected), the following&nbsp;if&nbsp;statement will be true.</p>
+
+
+
+<pre class="wp-block-code"><code>if(startTimer &amp;&amp; (now - lastTrigger &gt; (timeSeconds*1000))) {
+  Serial.println("Motion stopped...");
+  digitalWrite(led, LOW);
+  startTimer = false;
+}</code></pre>
+
+
+
+<p>The “Motion stopped…” message will be printed in the Serial Monitor, the LED is turned off, and the startTimer variable is set to false.</p>
+
+
+
+<h2 id="h-demonstration">Demonstration</h2>
+
+
+
+<p>Upload the code to your ESP32 board. Make sure you have the right board and COM port selected.</p>
+
+
+
+<p>Open the Serial Monitor at a baud rate of 115200.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/serial-monitor.png" alt="" class="wp-image-61341"></figure></div>
+
+
+
+<p>Move your hand in front of the PIR sensor. The LED should turn on, and a message is printed in the Serial Monitor saying “MOTION DETECTED!!!”. After 10 seconds the LED should turn off.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/pir_ESP32_demo.jpg" alt="" class="wp-image-68485"></figure></div>
+
+
+
+<p></p>
+
+
+
+<h2 id="h-great-going">Great Going !!!</h2>
+
+
+
+<p>You have done a great job by finishing this tutorial.</p>
+
+
+
+<p>Ensure to continue learning. Click&nbsp;<a href="https://electrorules.com/" target="_blank" rel="noreferrer noopener">here</a>&nbsp;to read more related articles</p>
+        </div>
+
+
+        <footer>
+                        
+            <div class="td-post-source-tags">
+                                            </div>
+
+                        <div class="td-block-row td-post-next-prev"><div class="td-block-span6 td-post-prev-post"><div class="td-post-next-prev-content"><span>Previous article</span><a href="https://electrorules.com/esp32-bluetooth-classic-with-arduino-ide-getting-started/">ESP32 Bluetooth Classic with Arduino IDE – Getting Started</a></div></div><div class="td-next-prev-separator"></div><div class="td-block-span6 td-post-next-post"><div class="td-post-next-prev-content"><span>Next article</span><a href="https://electrorules.com/esp32-web-server-arduino-ide/">ESP32 WEB SERVER-ARDUINO IDE</a></div></div></div>            <div class="td-author-name vcard author" style="display: none"><span class="fn"><a href="https://electrorules.com/author/vaibhav/">vaibhav K</a></span></div>            <span class="td-page-meta" itemprop="author" itemscope="" itemtype="https://schema.org/Person"><meta itemprop="name" content="vaibhav K"></span><meta itemprop="datePublished" content="2021-07-01T11:14:35+00:00"><meta itemprop="dateModified" content="2021-07-01T11:14:39+00:00"><meta itemscope="" itemprop="mainEntityOfPage" itemtype="https://schema.org/WebPage" itemid="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/"><span class="td-page-meta" itemprop="publisher" itemscope="" itemtype="https://schema.org/Organization"><span class="td-page-meta" itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://electrorules.com/wp-content/uploads/2021/06/Electrorules-300x86.png"></span><meta itemprop="name" content="Electrorules"></span><meta itemprop="headline " content="ESP32 with PIR Motion Sensor using Interrupts and Timers"><span class="td-page-meta" itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://electrorules.com/wp-content/uploads/2021/07/download.jpg"><meta itemprop="width" content="302"><meta itemprop="height" content="167"></span>        </footer>
+
+    </article> <!-- /.post -->
+
+    <div class="td_block_wrap td_block_related_posts tdi_2 td_with_ajax_pagination td-pb-border-top td_block_template_9" data-td-block-uid="tdi_2"><script>var block_tdi_2 = new tdBlock();
+block_tdi_2.id = "tdi_2";
+block_tdi_2.atts = '{"limit":6,"ajax_pagination":"next_prev","live_filter":"cur_post_same_categories","td_ajax_filter_type":"td_custom_related","class":"tdi_2","td_column_number":3,"block_type":"td_block_related_posts","live_filter_cur_post_id":1196,"live_filter_cur_post_author":"5","block_template_id":"","header_color":"","ajax_pagination_infinite_stop":"","offset":"","td_ajax_preloading":"","td_filter_default_txt":"","td_ajax_filter_ids":"","el_class":"","color_preset":"","border_top":"","css":"","tdc_css":"","tdc_css_class":"tdi_2","tdc_css_class_style":"tdi_2_rand_style"}';
+block_tdi_2.td_column_number = "3";
+block_tdi_2.block_type = "td_block_related_posts";
+block_tdi_2.post_count = "6";
+block_tdi_2.found_posts = "8";
+block_tdi_2.header_color = "";
+block_tdi_2.ajax_pagination_infinite_stop = "";
+block_tdi_2.max_num_pages = "2";
+tdBlocksArray.push(block_tdi_2);
+</script><h4 class="td-related-title td-block-title"><a id="tdi_3" class="td-related-left td-cur-simple-item" data-td_filter_value="" data-td_block_id="tdi_2" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#">RELATED ARTICLES</a><a id="tdi_4" class="td-related-right" data-td_filter_value="td_related_more_from_author" data-td_block_id="tdi_2" href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#">MORE FROM AUTHOR</a></h4><div id="tdi_2" class="td_block_inner">
+
+	<div class="td-related-row">
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://electrorules.com/getting-started-with-esp32-bluetooth-low-energy-ble-on-arduino-ide/" rel="bookmark" class="td-image-wrap " title="Getting Started with ESP32 Bluetooth Low Energy (BLE) on Arduino IDE"><img width="218" height="150" class="entry-thumb" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/ori-module-nodemcu-esp32-28407-218x150.jpg" srcset="https://electrorules.com/wp-content/uploads/2021/06/ori-module-nodemcu-esp32-28407-218x150.jpg 218w, https://electrorules.com/wp-content/uploads/2021/06/ori-module-nodemcu-esp32-28407-100x70.jpg 100w" sizes="(max-width: 218px) 100vw, 218px" alt="" title="Getting Started with ESP32 Bluetooth Low Energy (BLE) on Arduino IDE"></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/getting-started-with-esp32-bluetooth-low-energy-ble-on-arduino-ide/" rel="bookmark" title="Getting Started with ESP32 Bluetooth Low Energy (BLE) on Arduino IDE">Getting Started with ESP32 Bluetooth Low Energy (BLE) on Arduino IDE</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://electrorules.com/esp32-web-server-arduino-ide/" rel="bookmark" class="td-image-wrap " title="ESP32 WEB SERVER-ARDUINO IDE"><img width="218" height="150" class="entry-thumb" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/Bread01-218x150.jpg" srcset="https://electrorules.com/wp-content/uploads/2021/07/Bread01-218x150.jpg 218w, https://electrorules.com/wp-content/uploads/2021/07/Bread01-100x70.jpg 100w" sizes="(max-width: 218px) 100vw, 218px" alt="ESP32 WEB SERVER-ARDUINO IDE" title="ESP32 WEB SERVER-ARDUINO IDE"></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/esp32-web-server-arduino-ide/" rel="bookmark" title="ESP32 WEB SERVER-ARDUINO IDE">ESP32 WEB SERVER-ARDUINO IDE</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://electrorules.com/esp32-bluetooth-classic-with-arduino-ide-getting-started/" rel="bookmark" class="td-image-wrap " title="ESP32 Bluetooth Classic with Arduino IDE – Getting Started"><img width="218" height="150" class="entry-thumb" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/Bread01-1-218x150.jpg" srcset="https://electrorules.com/wp-content/uploads/2021/07/Bread01-1-218x150.jpg 218w, https://electrorules.com/wp-content/uploads/2021/07/Bread01-1-100x70.jpg 100w" sizes="(max-width: 218px) 100vw, 218px" alt="esp32 Bluetooth" title="ESP32 Bluetooth Classic with Arduino IDE – Getting Started"></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/esp32-bluetooth-classic-with-arduino-ide-getting-started/" rel="bookmark" title="ESP32 Bluetooth Classic with Arduino IDE – Getting Started">ESP32 Bluetooth Classic with Arduino IDE – Getting Started</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 --></div><!--./row-fluid-->
+
+	<div class="td-related-row">
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://electrorules.com/esp32-pwm-with-arduino-ide-analog-output/" rel="bookmark" class="td-image-wrap " title="ESP32 PWM with Arduino IDE (Analog Output)"><img width="218" height="150" class="entry-thumb" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/Bread01-218x150.jpg" srcset="https://electrorules.com/wp-content/uploads/2021/07/Bread01-218x150.jpg 218w, https://electrorules.com/wp-content/uploads/2021/07/Bread01-100x70.jpg 100w" sizes="(max-width: 218px) 100vw, 218px" alt="ESP32 WEB SERVER-ARDUINO IDE" title="ESP32 PWM with Arduino IDE (Analog Output)"></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/esp32-pwm-with-arduino-ide-analog-output/" rel="bookmark" title="ESP32 PWM with Arduino IDE (Analog Output)">ESP32 PWM with Arduino IDE (Analog Output)</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://electrorules.com/esp32-adc-read-analog-values-with-arduino-ide/" rel="bookmark" class="td-image-wrap " title="ESP32 ADC – Read Analog Values with Arduino IDE"><img width="218" height="150" class="entry-thumb" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/ori-module-nodemcu-esp32-28407-218x150.jpg" srcset="https://electrorules.com/wp-content/uploads/2021/06/ori-module-nodemcu-esp32-28407-218x150.jpg 218w, https://electrorules.com/wp-content/uploads/2021/06/ori-module-nodemcu-esp32-28407-100x70.jpg 100w" sizes="(max-width: 218px) 100vw, 218px" alt="" title="ESP32 ADC – Read Analog Values with Arduino IDE"></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/esp32-adc-read-analog-values-with-arduino-ide/" rel="bookmark" title="ESP32 ADC – Read Analog Values with Arduino IDE">ESP32 ADC – Read Analog Values with Arduino IDE</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://electrorules.com/esp32-pinout-reference/" rel="bookmark" class="td-image-wrap " title="Complete guide on   ESP32 Pinout reference: what GPIO pins do you use?"><img width="218" height="150" class="entry-thumb" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/image-1-218x150.png" srcset="https://electrorules.com/wp-content/uploads/2021/06/image-1-218x150.png 218w, https://electrorules.com/wp-content/uploads/2021/06/image-1-100x70.png 100w" sizes="(max-width: 218px) 100vw, 218px" alt="" title="Complete guide on   ESP32 Pinout reference: what GPIO pins do you use?"></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/esp32-pinout-reference/" rel="bookmark" title="Complete guide on   ESP32 Pinout reference: what GPIO pins do you use?">Complete guide on   ESP32 Pinout reference: what GPIO pins do you use?</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 --></div><!--./row-fluid--></div><div class="td-next-prev-wrap"><a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" class="td-ajax-prev-page ajax-page-disabled" aria-label="prev-page" id="prev-page-tdi_2" data-td_block_id="tdi_2"><i class="td-next-prev-icon td-icon-font td-icon-menu-left"></i></a><a href="https://electrorules.com/esp32-with-pir-motion-sensor-using-interrupts-and-timers/#" class="td-ajax-next-page" aria-label="next-page" id="next-page-tdi_2" data-td_block_id="tdi_2"><i class="td-next-prev-icon td-icon-font td-icon-menu-right"></i></a></div></div> <!-- ./block -->
+                                <div class="clearfix"></div></div>
+                            </div>
+                            <div class="td-pb-span4 td-main-sidebar" role="complementary">
+                                <div class="td-ss-main-sidebar" style="width: 228px; position: fixed; top: 20px; bottom: auto;"><div class="clearfix"></div>
+                                    <aside id="search-3" class="td_block_template_9 widget search-3 widget_search"><form method="get" class="td-search-form-widget" action="https://electrorules.com/">
+    <div role="search">
+        <input class="td-widget-search-input" type="text" value="" name="s" id="s"><input class="wpb_button wpb_btn-inverse btn" type="submit" id="searchsubmit" value="Search">
+    </div>
+</form></aside><div class="td_block_wrap td_block_9 td_block_widget tdi_5 td-pb-border-top td_block_template_9 td-column-1 td_block_padding td_block_bot_line" data-td-block-uid="tdi_5">
+<style>
+.td_block_template_9.widget > ul > li {
+                margin-left: 0 !important;
+            }
+            .td_block_template_9 .td-block-title {
+                font-size: 17px;
+                font-weight: 500;
+                margin-top: -10px;
+                margin-bottom: 22px;
+                line-height: 37px;
+                padding: 0;
+                position: relative;
+                text-align: left;
+            }
+            .td_block_template_9 .td-block-title:before {
+                content: '';
+                width: 100%;
+                height: 2px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #f5f5f5;
+            }
+            .td_block_template_9 .td-block-title:after {
+                content: '';
+                width: 50px;
+                height: 2px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                margin: auto;
+                background-color: #4db2ec;
+            }
+            .td_block_template_9 .td-block-title > * {
+                color: #000;
+            }
+            .td_block_template_9 .td-subcat-filter {
+                line-height: 37px;
+                display: table;
+            }
+            .td_block_template_9 .td-subcat-dropdown {
+                line-height: 1;
+                position: static;
+            }
+            .td_block_template_9 .td-subcat-dropdown .td-subcat-more {
+                margin-bottom: 0 !important;
+            }
+            .td_block_template_9 .td-subcat-dropdown ul:after {
+                height: 2px !important;
+            }
+            .td_block_template_9 .td-related-title {
+                margin-top: 0 !important;
+            }
+            .td_block_template_9 .td-related-title a {
+                margin-right: 20px;
+            }
+            @media (max-width: 767px) {
+                .td_block_template_9 .td-related-title a{
+                    font-size: 15px;
+                }
+            }
+            .td_block_template_9 .td-related-title .td-cur-simple-item {
+                color: #4db2ec;
+            }
+</style><script>var block_tdi_5 = new tdBlock();
+block_tdi_5.id = "tdi_5";
+block_tdi_5.atts = '{"sort":"random_posts","custom_title":"Recent Posts","limit":"5","header_color":"","class":"td_block_widget tdi_5","block_type":"td_block_9","separator":"","custom_url":"","block_template_id":"","m8_tl":"","post_ids":"","category_id":"","category_ids":"","tag_slug":"","autors_id":"","installed_post_types":"","offset":"","show_modified_date":"","time_ago":"","time_ago_add_txt":"ago","el_class":"","td_ajax_filter_type":"","td_ajax_filter_ids":"","td_filter_default_txt":"All","td_ajax_preloading":"","f_header_font_header":"","f_header_font_title":"Block header","f_header_font_settings":"","f_header_font_family":"","f_header_font_size":"","f_header_font_line_height":"","f_header_font_style":"","f_header_font_weight":"","f_header_font_transform":"","f_header_font_spacing":"","f_header_":"","f_ajax_font_title":"Ajax categories","f_ajax_font_settings":"","f_ajax_font_family":"","f_ajax_font_size":"","f_ajax_font_line_height":"","f_ajax_font_style":"","f_ajax_font_weight":"","f_ajax_font_transform":"","f_ajax_font_spacing":"","f_ajax_":"","f_more_font_title":"Load more button","f_more_font_settings":"","f_more_font_family":"","f_more_font_size":"","f_more_font_line_height":"","f_more_font_style":"","f_more_font_weight":"","f_more_font_transform":"","f_more_font_spacing":"","f_more_":"","m8f_title_font_header":"","m8f_title_font_title":"Article title","m8f_title_font_settings":"","m8f_title_font_family":"","m8f_title_font_size":"","m8f_title_font_line_height":"","m8f_title_font_style":"","m8f_title_font_weight":"","m8f_title_font_transform":"","m8f_title_font_spacing":"","m8f_title_":"","m8f_cat_font_title":"Article category tag","m8f_cat_font_settings":"","m8f_cat_font_family":"","m8f_cat_font_size":"","m8f_cat_font_line_height":"","m8f_cat_font_style":"","m8f_cat_font_weight":"","m8f_cat_font_transform":"","m8f_cat_font_spacing":"","m8f_cat_":"","m8f_meta_font_title":"Article meta info","m8f_meta_font_settings":"","m8f_meta_font_family":"","m8f_meta_font_size":"","m8f_meta_font_line_height":"","m8f_meta_font_style":"","m8f_meta_font_weight":"","m8f_meta_font_transform":"","m8f_meta_font_spacing":"","m8f_meta_":"","ajax_pagination":"","ajax_pagination_infinite_stop":"","css":"","tdc_css":"","td_column_number":1,"color_preset":"","border_top":"","tdc_css_class":"tdi_5","tdc_css_class_style":"tdi_5_rand_style"}';
+block_tdi_5.td_column_number = "1";
+block_tdi_5.block_type = "td_block_9";
+block_tdi_5.post_count = "5";
+block_tdi_5.found_posts = "63";
+block_tdi_5.header_color = "";
+block_tdi_5.ajax_pagination_infinite_stop = "";
+block_tdi_5.max_num_pages = "13";
+tdBlocksArray.push(block_tdi_5);
+</script><div class="td-block-title-wrap"><h4 class="td-block-title"><span class="td-pulldown-size">Recent Posts</span></h4></div><div id="tdi_5" class="td_block_inner">
+
+	<div class="td-block-span12">
+
+        <div class="td_module_8 td_module_wrap">
+
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/transistors-all-you-need-to-get-started/" rel="bookmark" title="Transistors- All You Need To Get Started">Transistors- All You Need To Get Started</a></h3>
+                <div class="td-module-meta-info">
+                                        <span class="td-post-author-name"><a href="https://electrorules.com/author/vaibhav/">vaibhav K</a> <span>-</span> </span>                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-07-13T05:49:27+00:00">July 13, 2021</time></span>                    <span class="td-module-comments"><a href="https://electrorules.com/transistors-all-you-need-to-get-started/#respond">0</a></span>                </div>
+            </div>
+
+            
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_8 td_module_wrap">
+
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/introduction-to-latches-in-sequential-logic-circuit/" rel="bookmark" title="Latches in Sequential Logic Circuits">Latches in Sequential Logic Circuits</a></h3>
+                <div class="td-module-meta-info">
+                                        <span class="td-post-author-name"><a href="https://electrorules.com/author/paurnami/">Paurnami</a> <span>-</span> </span>                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-08-29T08:26:04+00:00">August 29, 2021</time></span>                    <span class="td-module-comments"><a href="https://electrorules.com/introduction-to-latches-in-sequential-logic-circuit/#respond">0</a></span>                </div>
+            </div>
+
+            
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_8 td_module_wrap">
+
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/debug-python-project-in-pycharm-ide/" rel="bookmark" title="Debugging Python Project in PyCharm IDE">Debugging Python Project in PyCharm IDE</a></h3>
+                <div class="td-module-meta-info">
+                                        <span class="td-post-author-name"><a href="https://electrorules.com/author/paurnami/">Paurnami</a> <span>-</span> </span>                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-05-31T06:09:42+00:00">May 31, 2021</time></span>                    <span class="td-module-comments"><a href="https://electrorules.com/debug-python-project-in-pycharm-ide/#respond">0</a></span>                </div>
+            </div>
+
+            
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_8 td_module_wrap td_module_no_thumb">
+
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/temperature-sensor-ds18b20/" rel="bookmark" title="Temperature Sensor DS18B20">Temperature Sensor DS18B20</a></h3>
+                <div class="td-module-meta-info">
+                                        <span class="td-post-author-name"><a href="https://electrorules.com/author/user/">user</a> <span>-</span> </span>                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-08-02T09:05:24+00:00">August 2, 2021</time></span>                    <span class="td-module-comments"><a href="https://electrorules.com/temperature-sensor-ds18b20/#respond">0</a></span>                </div>
+            </div>
+
+            
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_8 td_module_wrap">
+
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/introduction-to-arduino-ide-and-first-program/" rel="bookmark" title="Introduction to Arduino IDE and First Program">Introduction to Arduino IDE and First Program</a></h3>
+                <div class="td-module-meta-info">
+                                        <span class="td-post-author-name"><a href="https://electrorules.com/author/vaibhav/">vaibhav K</a> <span>-</span> </span>                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-05-26T16:15:04+00:00">May 26, 2021</time></span>                    <span class="td-module-comments"><a href="https://electrorules.com/introduction-to-arduino-ide-and-first-program/#respond">0</a></span>                </div>
+            </div>
+
+            
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 --></div></div> <!-- ./block -->                                <div class="clearfix"></div></div>
+                            </div>
+                                    </div> <!-- /.td-pb-row -->
+    </div> <!-- /.td-container -->
+</div> <!-- /.td-main-content-wrap -->
+
+<!-- Instagram -->
+
+	
+	
+            <div class="tdc-footer-wrap ">
+
+                <!-- Footer -->
+				<div class="td-footer-wrapper td-footer-container td-container-wrap td-footer-template-14 ">
+    <div class="td-container td-footer-bottom-full">
+        <div class="td-pb-row">
+            <div class="td-pb-span3"><aside class="footer-logo-wrap"><a href="https://electrorules.com/"><img class="td-retina-data td-retina-version" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/mobileelectrorules-300x78.png" data-retina="https://electrorules.com/wp-content/uploads/2021/06/mobileelectrorules-300x78.png" alt="Website for Electronics and DIY activites : Electrorules.com" title="Website for Electronics and DIY activites : Electrorules.com" width=""></a></aside></div><div class="td-pb-span9"><aside class="footer-text-wrap"><div class="block-title"><span>ABOUT US</span></div>ElectroRules is a  community blog for IoT, Machine Learning, edge computing, AI, Hardware and Tutorials.<div class="footer-email-wrap">Contact us: <a href="mailto:mailtoelectrorules@gmail.com">mailtoelectrorules@gmail.com</a></div></aside></div>        </div>
+    </div>
+</div>
+                <!-- Sub Footer -->
+				            </div><!--close td-footer-wrap-->
+			
+</div><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><ins id="aswift_0_expand" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!1" data-load-complete="true"></iframe></ins></ins></ins><!--close td-outer-wrap-->
+
+
+                <div class="td-more-articles-box" style="display: none;">
+                    <i class="td-icon-close td-close-more-articles-box"></i>
+                    <span class="td-more-articles-box-title">MORE STORIES</span>
+                    <div class="td-content-more-articles-box">
+
+                    
+        <div class="td_module_9 td_module_wrap">
+
+            <div class="item-details">
+                <span class="td-module-comments"><a href="https://electrorules.com/esp32-pwm-with-arduino-ide-analog-output/#respond">0</a></span>                <h3 class="entry-title td-module-title"><a href="https://electrorules.com/esp32-pwm-with-arduino-ide-analog-output/" rel="bookmark" title="ESP32 PWM with Arduino IDE (Analog Output)">ESP32 PWM with Arduino IDE (Analog Output)</a></h3>
+                
+                <div class="td-module-meta-info">
+                    <span class="td-post-author-name"><a href="https://electrorules.com/author/vaishnavy/">vaishnavy menon</a> <span>-</span> </span>                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-07-01T05:33:07+00:00">July 1, 2021</time></span>                </div>
+
+            </div>
+
+	        
+        </div>
+
+                            </div>
+                </div>
+
+    <!--
+
+        Theme: Newspaper by tagDiv.com 2021
+        Version: 10.4 (rara)
+        Deploy mode: deploy
+        
+        uid: 617c7bb2c4869
+    -->
+
+    
+<!-- Custom css from theme panel -->
+<style type="text/css" media="screen">
+/* custom css theme panel */
+.syntaxhighlighter {
+    width: 700px;
+    overflow-y: auto !important;
+    overflow-x: auto !important;}
+</style>
+
+<script type="text/javascript" id="mkaz-code-syntax-prism-js-js-extra">
+/* <![CDATA[ */
+var prism_settings = {"pluginUrl":"https:\/\/electrorules.com\/wp-content\/plugins\/code-syntax-block\/"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/prism.js.download" id="mkaz-code-syntax-prism-js-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/underscore.min.js.download" id="underscore-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/js_posts_autoload.min.js.download" id="tdb_js_posts_autoload-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/tagdiv_theme.min.js.download" id="td-site-min-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/comment-reply.min.js.download" id="comment-reply-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/js_files_for_front.min.js.download" id="tdb_js_files_for_front-js"></script>
+<script type="text/javascript" src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/wp-embed.min.js.download" id="wp-embed-js"></script>
+
+<!-- JS generated by theme -->
+
+<script>
+    
+</script>
+
+
+
+
+<!-- Dynamic page generated in 0.573 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2021-10-29 22:54:42 -->
+
+<!-- super cache --><iframe src="./ESP32 with PIR Motion Sensor using Interrupts and Timers_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
