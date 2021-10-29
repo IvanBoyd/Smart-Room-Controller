@@ -30,7 +30,7 @@ const int   RGB_PixPin  = 3,          GRB_PixPin = 23,
             RGB_PixCnt  = 4,          GRB_PixCnt = 15, 
             PURE_RED    = 0xFF0000;  
 int   minNP = 2,          maxNP = 127,
-      low = 3,            med = 65,         high = 127,         // for NP light intensity
+      low = 3,            med = 50,         high = 127,         // for NP light intensity
       NPintensity   = 0,  newNPintensity,                       // var to hold mapped value from dist
       quickDel = 50,      ckDel = 1000,     longDel =  3000;    // delay presets
       
@@ -49,6 +49,7 @@ float tempC,      tempF,    tempinHg,
       pressPA,    humidRH,  fiveMinAvg;
 bool  bmeStatus;         
 bool  eStatus;
+int   temperatureTrigger = 0;
 byte  hexAddress=0x76;
       // "inHg" The barometer measures pressure in 3 different units: 
       //inches of mercury ( inHg) from 0.29 to 32.48 with a resolution of 0.01, 
@@ -57,7 +58,7 @@ byte  hexAddress=0x76;
 int   curr_T  = millis(),   lastSec     = millis(),   lastMin     = millis(),  
       minCnt  = 0,          i           = 0,          t           = 0,
       ttlSec  = 3,          lastSecond  = 0,          currentTime = millis(),
-      lastQSec= millis();
+      lastQSec= millis(),   fadeHueSec  = 0,          hueSecCnt   = 0;
 float fiveMinTemp[5] = {0.0,0.0,0.0,0.0,0.0};
 bool  first5minTemp;
 //  WEMO Vars
@@ -65,7 +66,8 @@ int   wemoLavaLamp  = 0, wemoGreenFan = 1, wemoTeapot = 2, wemoWhiteFan = 3,
       wemoDelay     = 0;
 bool  p_Off   = 0,              // _Off is set false
       t_On    = false,
-      lightOn = false;                   // bool defaults to F or 0
+      lightOn = false,
+      hueLightsOn = false;                   // bool defaults to F or 0
 // Button Var's
 int       buttonState =0,     QbuttonState =0;
 const int Y_BUTTONPIN = 8;
@@ -101,6 +103,8 @@ void setup() {
   inRange = !inRange;                   // bool var for if obj has entered my region to search
   lastMin = 0;       
   first5minTemp = true;
+  temperatureTrigger = 1;       // This is # of degrees over the 5 deg average required
+                                // to trigger the pixel flicker reaction
   fiveMinAvg    = CtoF(bme.readTemperature());
   i = 0;
   Serial.printf("Starting Program:\n");
@@ -129,7 +133,7 @@ void setup() {
     runHUEchk();        // Turn on/off all HUE lights
 //    fadeInHue(100);
 //    fadeOutHue();
-
+    HueLightsOff();
     lightOn = false;
     // leave device  off until prog begins
     p_Off   = 0;
@@ -140,9 +144,12 @@ void setup() {
     lastSec = millis();
     t_On = false;  // or 0
     lastQSec  = millis();
+    hueSecCnt = curr_T - lastSec;
+
     delay(170);
 }
 
+     // ************ BEGIN MAIN VOID LOOP *************  //
 void loop() {
   curr_T   = millis();                          // Run Constantly 
   currentTime = millis();  
@@ -159,7 +166,7 @@ void loop() {
         lightOn = true;       
     }
     delay(160);
-    QbuttonState = digitalRead(Y_BUTTONPIN);
+    QbuttonState = digitalRead(Y_BUTTONPIN);      // Set to 2 WEMOs
     if(lightOn && QbuttonState) {
         switchOFF(0);
         switchOFF(1); 
@@ -169,14 +176,18 @@ void loop() {
   }
 if((curr_T - lastSec)>1000) {                 // Update Time, Run once/per/second
   Serial.printf(".");     
-  lastSec = millis();   
-//  If(lastSec < 255) {
-//    fadeInHue(lastSec); 
-//  }
+  lastSec = millis();  
+  fadeHueSec = curr_T - lastSec;
+  if(fadeHueSec < 1000 && !hueLightsOn) {
+    fadeInHue(hueSecCnt); 
+    hueSecCnt = hueSecCnt+10;
+    hueLightsOn = true;
+  }
   tempF   = CtoF(bme.readTemperature());    // read temp and call CtoF function
 //    Serial.printf("Temperature by Second: %f \n",tempF);
 //    delay(500);
-  while(CtoF(bme.readTemperature()) > fiveMinAvg +1) {
+  while(CtoF(bme.readTemperature()) > fiveMinAvg + temperatureTrigger) {    
+                                                   // Set temp trigger in setup
     strobeNPs();
     delay(14);
   }
@@ -257,6 +268,14 @@ void fadeInHue(int _lastSec) {
   }
 }
 
+void HueLightsOff() {
+  int i;
+  for(i=1;i<6;i++)  {
+    setHue(i,false,0,0,0);
+
+  }
+}
+
 void fadeOutHue() {
   int i=0, n=0;
     Serial.printf("Entering fadeOutHue: i: %i n: %n \n ", i,n);
@@ -286,9 +305,9 @@ void runHUEchk()  {        // turn off/on all hue lights
     setHue(5,false,0,0,0);
 }        
 void runWEMOck(int _WemoDev, int _wemoDelay) {
-      switchOFF(wemoLavaLamp);       // make sure device is off
+      switchOFF(_WemoDev);       // make sure device is off
     // Test device ON/OFF
-    switchOFF(_WemoDev);       // make sure device is off
+//    switchOFF(_WemoDev);       // make sure device is off
 //    delay(_wemoDelay); 
     switchON(_WemoDev);        
     delay(_wemoDelay); 
@@ -420,8 +439,17 @@ int getDist(int _trigPin,int _duration,int _distance) {
 }
       //  -----------   END FUNCTIONS      -------------  //
 
-      //  -----------   PROGRAM HISTORY      -------------  //
+      //  -----------   PROGRAM DOCUMENTATION      -------------  //
+
 /* History, Past programs and code leading to this program: 
+ * setHue function needs 5 parameters
+   *  int bulb - this is the bulb number
+   *  bool activated - true for bulb on, false for off
+   *  int color - Hue color from hue.h
+   *  int - brightness - from 0 to 255
+   *  int - saturation - from 0 to 255
+   *   (bulb#, on/off (true/false), Hue (hue.h), bright:0-255, Saturation:0-255) 
+   *  eg, setHue(5,false,0,0,0); turns light 5 off
  *  - L10_03_BME280_SDMicro-- has a full use implementation of all of the BME280 functions
  *      including pressure, humidity and a Centigrade to Farenhite function
  *  -sensor2lightBB -- Same as sensor2light but moving to the Big BreadBoard and changing
@@ -431,7 +459,7 @@ int getDist(int _trigPin,int _duration,int _distance) {
  * - HC-SR04-DistSensor-function   ... sets up distance sensor and prints in cm
  *  From sample code on using the HC-SR04
 */ 
-       //  ---------   END PROGRAM HISTORY      -------------  //
+       //  ---------   END PROGRAM DOCUMENTATION      -------------  //
   
 //************  OLD STUFF that prob should be ditched *******************
 //void showNPmapped(int _NPintensity) {
