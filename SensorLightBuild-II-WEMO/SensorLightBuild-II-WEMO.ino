@@ -18,7 +18,6 @@
 #include <Ethernet.h>
 #include <mac.h>
 #include <wemo.h>
-
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -136,8 +135,11 @@ void setup() {
 
 void loop() {
   curr_T   = millis();                          // Run Constantly 
+  currentTime = millis();  
+//Serial.printf("QbuttonState: % i curr_T: %i lastQSec: %i  \n",QbuttonState, curr_T,lastQSec); 
+//delay(1000);
   if((currentTime - lastQSec)>150) {     // Update Time, Run once/per/Quarter second
-    Serial.printf(";");  
+    Serial.printf("IF Qsec");  
     QbuttonState = digitalRead(Y_BUTTONPIN);
     Serial.printf("QbuttonState: %i \n",QbuttonState); 
 //    delay(1000);
@@ -146,8 +148,7 @@ void loop() {
         lightOn = true;       
     }
     delay(160);
-        QbuttonState = digitalRead(Y_BUTTONPIN);
-
+    QbuttonState = digitalRead(Y_BUTTONPIN);
     if(lightOn && QbuttonState) {
         switchOFF(0); 
         lightOn = false;         
@@ -185,7 +186,7 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
    if(!first5minTemp) {
       Serial.printf("*** CYCLELING Five Min Temp Average: %f ***\n",fiveMinAvg);
        for(i=0; i<4; i++) {
-       fiveMinTemp[i]= fiveMinTemp[i+1];
+          fiveMinTemp[i]= fiveMinTemp[i+1];
        }
 //      fiveMinTemp[0] = fiveMinTemp[1];
 //      fiveMinTemp[1] = fiveMinTemp[2];
@@ -228,8 +229,8 @@ if((curr_T-lastMin)>60000)  {           // Update time 1x/min
   
 }     // ************ END MAIN VOID LOOP *************  //
 
-      //  -----------     FUNCTIONS      -------------  //
 
+      //  -----------     FUNCTIONS      -------------  //
 
 void runWEMOck(int _WemoDev, int _wemoDelay) {
       switchOFF(wemoLavaLamp);       // make sure device is off
