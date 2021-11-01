@@ -1,0 +1,6 @@
+NeoPixels powered by 5v require a 5V data signal. If using a 3.3V microcontroller you must use a logic level shifter such as a 74AHCT125 or 74HCT245. (If you are powering your NeoPixels with 3.7v directly from a LiPoly cell, a 3.3v data signal is OK)
+
+
+Can NeoPixels be powered directly from the Arduino’s 5V pin?
+
+Sometimes. The Arduino can continuously supply only about 500 milliamps to the 5V pin. Each NeoPixel can draw up to 60 milliamps at full brightness. So yes, you can skip the separate DC supply and power directly off the Arduino as long as just a few pixels are used, more if the colors and overall brightness are low. When in doubt, give the pixels a separate power supply

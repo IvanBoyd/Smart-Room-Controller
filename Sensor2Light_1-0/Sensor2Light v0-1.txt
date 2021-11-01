@@ -1,0 +1,38 @@
+Readme.txt file for program, Sensor2Light
+October 31, 2021
+Author: Ivan Boyd
+
+Description:
+ Sensor2Light is a digital artwork crated by Ivan Boyd. The intent of Sensor2Light (S2L) is to integrate a static infinity box (IB) with various forms of digital technology to create a dynamically interactive IB. 
+Terms: An infinity box (IB) is simply and enclosure of mirrors that endlessly reflect whatever imagery is captured inside them. The IB is viewed through what is commonly referred to as 2-way or 1-way mirror. Two-way mirrors are generally known from the detective-suspect interrogation scenario where people can anonymously view the interrogation through a two-way mirror. Coatings have been applied to the glass of the two-way mirror that both reflect (mirror) the enclosure back to itself and simultaneously permit viewing through the exterior of the 2-way mirror.
+Hardware:
+-	Teensy 3.2 Development Board
+-	Adafruit BME280 temperature, pressure and humidity  sensor
+-	Adafruit SSD1306 OLED display
+-	HC-SR04 distance sensor
+-	Adafruit RGB and GRB Neopixels in chip, 5mm through hole and ring mounted
+-	Basic LEDs and buttons
+-	Ethernet, to attach network addressed WEMO and HUE light devices
+-	Lenovo LAPTOP-UFEV2AC3, 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz   2.30 GHz, 16GB Ram, 64-bit O/S, x64-based processor running Windows 10 Home
+-	Breadboard, misc 22 guage wires, resistors and capacitors
+Software:
+-	Arduino's IDE software with the Teensyduino add-on is the primary programming environment for Teensy.
+-	C++
+-	FormLabs
+-	SolidWorks
+Teamwork, Version Control, Social Media:
+-	Github
+-	Slack
+-	Microsoft Teams
+-	Hackster
+-	LinkedIn
+
+
+
+The distance sensor is used to tie distance to LED value intensity output, ie, when object is further away the LEDs are dimmer.
+Settable option in the program. Users are advised to only change the following constants and variables:
+-	dBug = true, or dBug = false and dBugDel = #of seconds desired to view error messages.
+-	Setting this variable turns on several error messages to be printed to the 9600 bd Monitor. This is purely a debugging tool. dBug can be set to “false” for significantly less noise on the 9600 bd Monitor.
+-	dBugDel (debug delay) sets the number of seconds that the program is slowed down by. If this value is set >0 one can see in a step-motion the movement of the program, howeverer the program does not work correctly to the accumulation of delay()’s that affect how distance is read and time is measured. Therefore, be certain to set this to 0 when debugging is completed.
+-	eNet = true, or eNet = false, If running without ethernet attached then set eNet to false. This will eliminate any ethernet attached devices, such as WEMO controlled outlets or HUE lights.
+-	temperatureTrigger = 1,      This is # of degrees over the 5 deg average required to trigger the pixel flicker reaction when touching the temperature sensor. I have tried this at 3 degrees and it takes a while of touching the sensor to make the Neopixel ring activate. 1 second is almost immediate. After the temperature sensor is no longer touched the Neopixel ring will remain activated while the temperature readjusts. This depends on the length of time that he finger touched the sensor increasing its heat above the room temperature.
